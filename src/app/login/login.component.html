@@ -1,0 +1,12 @@
+<form id="box" class="box" (submit)="DoLogIn($event,loadPanel)">
+<dx-form id="formdata"
+  width="380px"
+ [(formData)]="formData" 
+[(items)]="items"
+validationGroup="dxvalidationGroup"
+></dx-form>
+</form>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
+  [shading]="false" [closeOnOutsideClick]="false">
+</dx-load-panel>

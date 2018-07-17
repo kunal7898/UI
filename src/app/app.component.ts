@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+
+
+  getScreen() {
+    let width = window.innerWidth;
+
+    if (width < 768) 
+        return "xs";
+    else
+        return "lg";
+}
 }
