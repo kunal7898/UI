@@ -1,3 +1,5 @@
+import { LoginComponent } from "../login/login.component";
+
 export  class FormValidator{
 
 //Get Mandatory Fields Validation
@@ -41,10 +43,19 @@ export  class FormValidator{
              } 
           };
           if(Type=="dxButton")
-          return  {
-            text:"Login",
-            type :"success"
-          };   
+          {
+            var Component  = this;
+            return  {
+              text:"Login",
+              type :"success",
+              onClick: function(event,value) {
+               let com  =  new LoginComponent();
+               com.DoLogIn(event.event,value);
+
+            },
+            }; 
+          }
+         
         else
         return null;
       }

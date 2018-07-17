@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,Output,EventEmitter } from '@angular/core';
 import { LoginFormResolver } from '../FormResolver/LoginFormResolver';
 import { FormValidator } from '../Validator/FormValidator';
 import { DxFormComponent } from "devextreme-angular/ui/form";
 import { AppSettings } from '../AppCommon/App.Constant';
+import { LoginModel } from '../Models/LoginModel';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { AppSettings } from '../AppCommon/App.Constant';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  formData:{};
+  formData:LoginModel.UserLoginModel;
   items :any[];
   Server : string ;
   loadingVisible: boolean = false;
@@ -21,8 +22,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     //Load Login Items
-    this.Server = this.LoadDefaultServer();
-    this.formData = {"Server":this.Server};
+    //this.formData ={};
     this.items= this.LoadItems();
   }
 
@@ -42,9 +42,7 @@ export class LoginComponent implements OnInit {
   return Items;
   }
   
-  private LoadDefaultServer():string{
-    return AppSettings.LOGIN_URL;
-  }
+
 
   public DoLogIn(event, panal) {
     let loginForm: any = this.form.instance;
@@ -58,5 +56,9 @@ export class LoginComponent implements OnInit {
     }
   }
 
+private SetFormLoginval() {
+  
+  
+}
 
 }
