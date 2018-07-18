@@ -5,8 +5,10 @@
 [(items)]="items"
 validationGroup="dxvalidationGroup"
 ></dx-form>
+<dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
+  [shading]="false" [closeOnOutsideClick]="false" message="Loading user enviroment..">
+</dx-load-panel>
+
 </form>
 
-<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
-  [shading]="false" [closeOnOutsideClick]="false">
-</dx-load-panel>
+

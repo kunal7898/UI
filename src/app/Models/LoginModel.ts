@@ -1,24 +1,17 @@
+import { ModelBase } from "./ModelBase";
+
 export namespace LoginModel{
     
 
-    //User login Model Base
- export class LoginModelBase{
-    grant_type : string = "password";
- }
 
- export class UserLoginModel extends LoginModelBase{
 
-    //Constructor
-   constructor(private model : UserLoginModel){
-    super();
-    this.username = model.username;
-    this.password = model.password;
-   }
+ export class UserLoginModel extends ModelBase<UserLoginModel>{
 
    
    // Declartion
-   public  username : string=null;
-   public  password : string=null;
+   grant_type : string = "password";
+   public  UserName : string=null;
+   public  Password : string=null;
  }
 
 
