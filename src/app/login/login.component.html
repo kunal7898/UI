@@ -1,14 +1,17 @@
-<form id="box" class="box" (submit)="DoLogIn($event,loadPanel)">
-<dx-form id="formdata"
-  width="380px"
- [(formData)]="formData" 
-[(items)]="items"
-validationGroup="dxvalidationGroup"
-></dx-form>
-<dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
-  [shading]="false" [closeOnOutsideClick]="false" message="Loading user enviroment..">
-</dx-load-panel>
-
-</form>
+<div id="body">
+  <form id="box" class="box" (submit)="DoLogIn($event,loadPanel)">
+    <dx-form id="formdata"
+      width="380px"
+     [(formData)]="formData" 
+    [(items)]="items"
+    validationGroup="dxvalidationGroup"
+    ></dx-form>
+    <dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
+      [shading]="false" [closeOnOutsideClick]="false" message="Loading user enviroment..">
+    </dx-load-panel>
+    
+    </form>
+    
+</div>
 
 

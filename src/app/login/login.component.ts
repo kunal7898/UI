@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
   Server : string ;
   loadingVisible: boolean = false;
   loadingPanal: any;
-  message :"hello";
   loginSubscriber: Subscription;
   //#endregion
 
@@ -49,7 +48,7 @@ export class LoginComponent implements OnInit {
     Items.push({
       dataField:element["code"],
       editorType:this.getEditorType(element["AttributeType"]),
-      editorOptions:this.getEditorOptions(this.getEditorType(element["AttributeType"]),element["PicklistId"]),
+      editorOptions:this.getEditorOptions(this.getEditorType(element["AttributeType"]),element["HideData"]),
       validationRules: FormValidator.getMandatoryFieldsValidation(element["code"],element["IsMandatory"]) ,
       
     })
@@ -69,10 +68,11 @@ export class LoginComponent implements OnInit {
   }
 
   private initLogin(){
-this.loginSubscriber =  this.loginHandler.SignIn(this.formData).subscribe(
-result => {
-console.log(result);
-}
+   this.loginSubscriber =  this.loginHandler.SignIn(this.formData).subscribe(
+       result => {
+         this.loadingVisible =  false;
+              console.log(result);
+          }
 
 )
   }
@@ -84,8 +84,8 @@ console.log(result);
      return "dxSelectBox";
      if(Attributetype=="Date")
      return "dxDateBox";
-     if(Attributetype=="textarea")
-     return "dxTextArea";
+     if(Attributetype=="string")
+     return "dxTextBox";
      if(Attributetype=="button")
      return "dxButton";
      else
@@ -94,10 +94,10 @@ console.log(result);
   }
 
     //Get Editor Option
-    private  getEditorOptions(Type,PicklistId):any{
+    private  getEditorOptions(Type,HideData):any{
       if(Type=="dxSelectBox")
         return  {
-          dataSource:JSON.parse(localStorage.getItem(PicklistId)),
+         // dataSource:JSON.parse(localStorage.getItem(PicklistId)),
           displayExpr: "Name",
           valueExpr: "ID",
           searchEnabled: true,
@@ -112,13 +112,24 @@ console.log(result);
           return  {
             text:"Login",
             type :"success",
+            width:"380px",
             onClick: function(event,value) {
              Component.DoLogIn(event.event);
 
           },
           }; 
         }
-       
+       if(Type=="dxTextBox" && HideData){
+           return{
+           mode:"password",
+           showClearButton:true
+            }
+       }
+       if(Type=="dxTextBox" && !HideData){
+        return{
+        showClearButton:true
+         }
+    }
       else
       return null;
     }
