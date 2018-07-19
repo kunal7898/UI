@@ -12,6 +12,8 @@ import { SessionDataAgent } from './SessionDataAgent/SessionDataAgent';
 import {Ng2Webstorage} from 'ngx-webstorage';
 import { MenuComponentComponent } from './menu-component/menu-component.component';
 import { MenuHandler } from './Helpers/MenuHandler';
+import { AuthPreventer } from './RouterPreventer/AuthPreventer';
+import { PagenotFoundComponent } from './pagenot-found/pagenot-found.component';
 
 
 
@@ -19,7 +21,8 @@ import { MenuHandler } from './Helpers/MenuHandler';
   declarations: [
     AppComponent,
     LoginComponent,
-    MenuComponentComponent
+    MenuComponentComponent,
+    PagenotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +35,7 @@ import { MenuHandler } from './Helpers/MenuHandler';
   providers: [
     LoginHandler,LoginService,
     MenuHandler,
+    AuthPreventer,
     SessionDataAgent,
    { provide: HTTP_INTERCEPTORS, useClass: HTTPServiceInterceptor,multi: true },
   
