@@ -1,5 +1,5 @@
 <div id="body">
-  <form id="box" class="box" (submit)="DoLogIn($event,loadPanel)">
+  <form id="box" class="box" (submit)="DoLogIn($event)">
     <dx-form id="formdata"
       width="380px"
      [(formData)]="formData" 
@@ -7,7 +7,7 @@
     validationGroup="dxvalidationGroup"
     ></dx-form>
     <dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
-      [shading]="false" [closeOnOutsideClick]="false" message="Loading user enviroment..">
+      [shading]="false" [closeOnOutsideClick]="false" [(message)]="LoadingMessage">
     </dx-load-panel>
     
     </form>

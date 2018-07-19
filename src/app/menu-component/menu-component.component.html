@@ -1,0 +1,43 @@
+
+<div class="slideout-container" id="slideOutView">
+  <dx-slide-out-view
+      #slideout
+      [(menuVisible)]="menuVisible"
+      [swipeEnabled]="true"
+    
+  >
+  <div *dxTemplate="let menuData of 'content'" style="height: 100%;">
+          <dx-toolbar [dataSource]="toolbarItems">
+              </dx-toolbar>
+              <!-- <div class="rightTitle">Name: <b>{{viewName}}</b></div> -->
+              <div class="rightbox">
+                  <router-outlet></router-outlet>
+              </div>
+          </div>
+  <div *dxTemplate="let menuData of 'menu'" style="height: 100%;">
+
+      <dx-tree-view
+      #treeview
+      [dataSource]="menus"
+      [(width)]="width"
+      [searchEnabled]="true"
+      searchMode="contains"
+      [(height)]="height"
+      keyExpr="Id"
+      displayExpr="ValueName"
+      parentIdExpr="ParentID"
+      (onItemClick)="selectItem($event)"
+      dataStructure="plain"
+      >
+      <div *dxTemplate="let itemData of 'treeItem'">
+        {{itemData.text}} 
+        <span id="addnew" *ngIf="itemData.items.length == 0" 
+            class="fa fa-plus-circle "
+            (click)="GotoNewView(itemData);$event.stopPropagation()">
+          </span>
+      </div>
+      </dx-tree-view>
+
+  </div>
+
+

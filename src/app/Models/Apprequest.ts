@@ -16,10 +16,25 @@ export namespace AppRequest{
     }
 
 
+
+    export class LoginResponseMessage{
+     public userloginResponse  : AppRequest.LoginResponse;
+    }
+
+
     export class LoginRequest{
        public grant_type : string = "password";
        public UserName : string;
         public  Password : string;
+    }
+
+    export class LoginResponse{
+        public access_token : string ;
+        public userName: string;
+        public LastLogin : DateTimeFormat;
+        public PhoneNumber: string;
+        public UserType : string;
+        public UserViews : JSON;
     }
 
 

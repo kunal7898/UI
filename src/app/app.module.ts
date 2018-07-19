@@ -8,16 +8,22 @@ import { LoginComponent } from './login/login.component';
 import { LoginHandler } from './Helpers/LoginHanlder';
 import { LoginService } from './Services/LoginService';
 import { HTTPServiceInterceptor } from './Services/HTTPServiceInterCepter';
+import { SessionDataAgent } from './SessionDataAgent/SessionDataAgent';
+import {Ng2Webstorage} from 'ngx-webstorage';
+import { MenuComponentComponent } from './menu-component/menu-component.component';
+import { MenuHandler } from './Helpers/MenuHandler';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    MenuComponentComponent
   ],
   imports: [
     BrowserModule,
+    Ng2Webstorage,
     DevExtremeModule,
     HttpClientModule,
     RoutingModule,
@@ -25,6 +31,8 @@ import { HTTPServiceInterceptor } from './Services/HTTPServiceInterCepter';
   ],
   providers: [
     LoginHandler,LoginService,
+    MenuHandler,
+    SessionDataAgent,
    { provide: HTTP_INTERCEPTORS, useClass: HTTPServiceInterceptor,multi: true },
   
   ],

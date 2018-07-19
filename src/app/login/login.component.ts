@@ -7,6 +7,8 @@ import { LoginModel } from '../Models/LoginModel';
 import { LoadingModel } from '../Models/LoadingModel';
 import { Subscription } from 'rxjs/Subscription';
 import { LoginHandler } from '../Helpers/LoginHanlder';
+import { SessionDataAgent } from '../SessionDataAgent/SessionDataAgent';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,13 +25,14 @@ export class LoginComponent implements OnInit {
   loadingVisible: boolean = false;
   loadingPanal: any;
   loginSubscriber: Subscription;
+  LoadingMessage : string ;
   //#endregion
 
   @ViewChild(DxFormComponent) form: DxFormComponent;
 
  //#region "Constructor"
 
-  constructor(public loginHandler :LoginHandler) { }
+  constructor(public loginHandler :LoginHandler,  private router: Router) { }
 
 //#endregion
 
@@ -57,11 +60,12 @@ export class LoginComponent implements OnInit {
   }
 
 
-  private DoLogIn(event) {
+  public DoLogIn(event) {
     let loginForm: any = this.form.instance;
     let valid: any = loginForm.validate();
     event.preventDefault();
     if (valid.isValid) {
+     this.LoadingMessage = "logging in...";
      this.loadingVisible =  true;
      this.initLogin();
     }
@@ -71,12 +75,23 @@ export class LoginComponent implements OnInit {
    this.loginSubscriber =  this.loginHandler.SignIn(this.formData).subscribe(
        result => {
          this.loadingVisible =  false;
-              console.log(result);
+         this.LoadingMessage = "loading user environment...";
+         this.loadingVisible =  true;
+         setTimeout(()=>{    //<<<---    using ()=> syntax
+          this.loadingVisible =  false;
+     }, 2000);
+       this.LoadUserMenus();
+        console.log(result);
           }
 
 )
   }
 
+
+private LoadUserMenus(){
+  this.router.navigate(['menu'])
+}
+ 
 
   //Get Editor Type   
   private   getEditorType(Attributetype):any{

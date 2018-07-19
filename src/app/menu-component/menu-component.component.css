@@ -1,0 +1,64 @@
+#info {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+#info img {
+    width: 100%;
+}
+#addnew{
+    cursor: pointer;
+}
+.dx-slideout .dx-slideout-menu {
+    width: 250px;
+    min-width: 0px!important;
+}
+.slideout-container {
+    height: auto;
+    position: absolute;
+    top:5px; 
+    bottom: 0;
+    width:99%;
+}
+ .dx-field-label {
+    width: 70%;
+}
+
+.rightTitle{
+    left: 60px;
+    float: right;
+    top: 8px;
+    position: absolute;
+}
+
+.leftitle{
+    right: 60px;
+    float: right;
+    top: 6px;
+    position: absolute;
+}
+
+.rightbox{
+    width:100%;
+    border: 0px solid #000;
+    margin: 8px;
+}
+.dx-treeview .dx-treeview-item{
+    cursor: pointer;
+}
+.dx-treeview .dx-treeview-item .dx-treeview-item-content span {
+    vertical-align: middle;
+    float: right;
+    font-size: 20px;
+}
+
+.dx-treeview .dx-treeview-item.dx-state-hover {
+    background-color: #f5f5f5;
+    color: #000;
+}
+
+
+
+
