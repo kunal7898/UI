@@ -15,6 +15,7 @@ export class LogoutHandler extends BaseHandler{
         
 public Logout():Observable<any>{
     this.LogoutService.logout().subscribe( result => {
+        this.SessionDataAgent.ClearStorage();
         console.log(result);
         this.source.next(result);
     },

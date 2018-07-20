@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuModel } from '../Models/MenuModel';
 import { TreeView } from '../Models/TreeViewModel';
 import { MenuHandler } from '../Helpers/MenuHandler';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-menu-component',
   templateUrl: './menu-component.component.html',
-  styleUrls: ['./menu-component.component.css']
+  styleUrls: ['./menu-component.component.css'],
 })
 export class MenuComponentComponent implements OnInit {
   logoutSubscriber: Subscription;

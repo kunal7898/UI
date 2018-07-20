@@ -17,6 +17,9 @@ import { PagenotFoundComponent } from './pagenot-found/pagenot-found.component';
 import { AlertService } from './Services/AlertService';
 import { LogoutService } from './Services/LogoutService';
 import { LogoutHandler } from './Helpers/LogoutHandler';
+import { EntityDataGridComponent } from './entity-data-grid/entity-data-grid.component';
+import { EntityDataGridHandler } from './Helpers/EntityDataGridHandler';
+import { EntityDataGridService } from './Services/EntityDataGridService';
 
 
 
@@ -25,7 +28,8 @@ import { LogoutHandler } from './Helpers/LogoutHandler';
     AppComponent,
     LoginComponent,
     MenuComponentComponent,
-    PagenotFoundComponent
+    PagenotFoundComponent,
+    EntityDataGridComponent
   ],
   imports: [
     BrowserModule,
@@ -36,8 +40,11 @@ import { LogoutHandler } from './Helpers/LogoutHandler';
     DxResponsiveBoxModule
   ],
   providers: [
-    LoginHandler,LoginService,
+    LoginHandler,
+    LoginService,
     LogoutHandler,
+    EntityDataGridService,
+    EntityDataGridHandler,
     AlertService,
     LogoutService,
     MenuHandler,

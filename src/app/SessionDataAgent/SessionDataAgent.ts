@@ -41,5 +41,9 @@ public GetNav():JSON{
 
     //#endregion
 
+    public ClearStorage(){
+        this.sessionSt.clear();
+    }
+
 
 }
