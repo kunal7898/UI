@@ -14,6 +14,9 @@ import { MenuComponentComponent } from './menu-component/menu-component.componen
 import { MenuHandler } from './Helpers/MenuHandler';
 import { AuthPreventer } from './RouterPreventer/AuthPreventer';
 import { PagenotFoundComponent } from './pagenot-found/pagenot-found.component';
+import { AlertService } from './Services/AlertService';
+import { LogoutService } from './Services/LogoutService';
+import { LogoutHandler } from './Helpers/LogoutHandler';
 
 
 
@@ -34,6 +37,9 @@ import { PagenotFoundComponent } from './pagenot-found/pagenot-found.component';
   ],
   providers: [
     LoginHandler,LoginService,
+    LogoutHandler,
+    AlertService,
+    LogoutService,
     MenuHandler,
     AuthPreventer,
     SessionDataAgent,

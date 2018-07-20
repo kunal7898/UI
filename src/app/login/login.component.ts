@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { LoginHandler } from '../Helpers/LoginHanlder';
 import { SessionDataAgent } from '../SessionDataAgent/SessionDataAgent';
 import { Router } from '@angular/router';
-
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-login',
@@ -79,8 +79,9 @@ export class LoginComponent implements OnInit {
          this.loadingVisible =  true;
          setTimeout(()=>{    //<<<---    using ()=> syntax
           this.loadingVisible =  false;
+          this.LoadUserMenus();
      }, 2000);
-       this.LoadUserMenus();
+      
         console.log(result);
           }
 
@@ -129,7 +130,9 @@ private LoadUserMenus(){
             type :"success",
             width:"380px",
             onClick: function(event,value) {
-             Component.DoLogIn(event.event);
+              var button =  event.component;
+              button.option('disabled', true);
+              Component.DoLogIn(event.event);
 
           },
           }; 
