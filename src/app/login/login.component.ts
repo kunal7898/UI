@@ -32,7 +32,9 @@ export class LoginComponent implements OnInit {
 
  //#region "Constructor"
 
-  constructor(public loginHandler :LoginHandler,  private router: Router) { }
+  constructor(public loginHandler :LoginHandler,  private router: Router,public SessionDataAgent:SessionDataAgent) { 
+    this.SessionDataAgent.ClearStorage();
+  }
 
 //#endregion
 
