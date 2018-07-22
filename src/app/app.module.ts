@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule ,HTTP_INTERCEPTORS} from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { DevExtremeModule,DxResponsiveBoxModule } from 'devextreme-angular';
+import { DevExtremeModule,DxResponsiveBoxModule,DxChartModule } from 'devextreme-angular';
 import { RoutingModule} from './app.routing';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -18,8 +18,12 @@ import { AlertService } from './Services/AlertService';
 import { LogoutService } from './Services/LogoutService';
 import { LogoutHandler } from './Helpers/LogoutHandler';
 import { EntityDataGridComponent } from './entity-data-grid/entity-data-grid.component';
-import { EntityDataGridHandler } from './Helpers/EntityDataGridHandler';
-import { EntityDataGridService } from './Services/EntityDataGridService';
+import { CatalogEntityDataGridHandler } from './Helpers/EntityDataGridHandler';
+import { CataLogEntityDataGridService } from './Services/EntityDataGridService';
+import { DashBoardComponent } from './dash-board/dash-board.component';
+import { CatalogEntityComponent } from './catalog-entity/catalog-entity.component';
+import { QueryEntityHandler } from './Helpers/QueryEntityHanlder';
+import { QueryEntityService } from './Services/QueryEntityService';
 
 
 
@@ -29,7 +33,9 @@ import { EntityDataGridService } from './Services/EntityDataGridService';
     LoginComponent,
     MenuComponentComponent,
     PagenotFoundComponent,
-    EntityDataGridComponent
+    EntityDataGridComponent,
+    DashBoardComponent,
+    CatalogEntityComponent
   ],
   imports: [
     BrowserModule,
@@ -43,8 +49,10 @@ import { EntityDataGridService } from './Services/EntityDataGridService';
     LoginHandler,
     LoginService,
     LogoutHandler,
-    EntityDataGridService,
-    EntityDataGridHandler,
+    CataLogEntityDataGridService,
+    CatalogEntityDataGridHandler,
+    QueryEntityHandler,
+    QueryEntityService,
     AlertService,
     LogoutService,
     MenuHandler,

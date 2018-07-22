@@ -1,4 +1,6 @@
 import { LoginModel } from "./LoginModel";
+import { MetaDataModel } from "./MetaDataModel";
+import { QueryEntityModel } from "./QueryEntityModel";
 
 export namespace AppRequest{
 
@@ -21,6 +23,24 @@ export namespace AppRequest{
      public userloginResponse  : AppRequest.LoginResponse;
     }
 
+    export class MetadataRequestMessage{
+        public metadataRequest : AppRequest.MetadataRequest;
+        constructor(MetadataRequest: MetaDataModel.EntityMetaDataModel ){
+            this.metadataRequest =  new AppRequest.MetadataRequest();
+            this.metadataRequest.EntityType =  MetadataRequest.EntityType;
+
+        }
+    }
+
+    
+    export class EntityQueryRequestMessage{
+        public QueryEntityRequest : AppRequest.EntityQueryRequest;
+        constructor(queryEntityRequest: QueryEntityModel.EntityMetaDataModel ){
+            this.QueryEntityRequest =  new AppRequest.EntityQueryRequest();
+            this.QueryEntityRequest.EntityType =  queryEntityRequest.EntityType;
+
+        }
+    }
 
     export class LoginRequest{
        public grant_type : string = "password";
@@ -35,7 +55,15 @@ export namespace AppRequest{
         public PhoneNumber: string;
         public UserType : string;
         public UserViews : JSON;
+        public Metadata:JSON;
     }
 
+    export class MetadataRequest{
+       public EntityType : number
+    }
+
+    export class EntityQueryRequest{
+        public EntityType : number
+     }
 
 }

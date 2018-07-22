@@ -6,13 +6,14 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { SessionDataAgent } from "../SessionDataAgent/SessionDataAgent";
 import { AlertService } from "./AlertService";
+import { Router } from "../../../node_modules/@angular/router";
 
 
 @Injectable()
 export class HTTPServiceInterceptor implements  HttpInterceptor{
 
 
-   constructor(public  SessionDataAgent:SessionDataAgent,public AlertService:AlertService){
+   constructor(public  SessionDataAgent:SessionDataAgent,public AlertService:AlertService,public router:Router){
 
    }
 
@@ -25,7 +26,14 @@ export class HTTPServiceInterceptor implements  HttpInterceptor{
       }
 
       errorHandler(error: any): void {
-       this.AlertService.FailAlert(error.message,"Error");
+        if(error.status==401){
+          this.AlertService.LoginFailed("Your Session Details not longer vaild.","Session Details").then((response) => {
+              this.router.navigate(['/login']);
+         });
+        }else{
+          this.AlertService.FailAlert(error.message,"Error");
+        }
+       
       }
 
 

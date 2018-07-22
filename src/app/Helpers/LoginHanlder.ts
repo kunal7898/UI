@@ -33,6 +33,7 @@ return (this.AsObservable()) ;
 public OnLoginSuccess(result:AppRequest.LoginResponse){
   
     if(result.access_token!=null){
+        this.SessionDataAgent.SetMetadata(result.Metadata);
         this.SessionDataAgent.SetAccessToken(result.access_token);
         this.SessionDataAgent.SetNav(result.UserViews);
     }

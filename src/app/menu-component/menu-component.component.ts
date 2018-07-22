@@ -16,6 +16,8 @@ import { Router } from '@angular/router';
 export class MenuComponentComponent implements OnInit {
   logoutSubscriber: Subscription;
   menuVisible: boolean;
+  loadingVisible: boolean = false;
+  LoadingMessage : string ;
   toolbarItems: any[];
   menus:any;
   width : number = 300;
@@ -41,21 +43,41 @@ export class MenuComponentComponent implements OnInit {
   
    selectItem(event){
     event.node.expanded=true;
-    if(event.itemData.ValueName=="Logout"){
+    if(event.node.children.length>0){
+        return;
+      }
+    if(event.itemData.Id=="2"){
+        this.router.navigate(['menu'])
+        return;
+    }
+    if(event.itemData.Id=="1_1_1_1"){
         this.alertService.Logout("Are You Sure You want to Logout","Logout").then((response) => {
             if(response){
+      this.LoadingMessage = "logging you out...";
+      this.loadingVisible =  true;
              this.Logout();
+             return ;
              }
          });
     }
-    if(event.node.children.length>0){
-      return;
+    if(event.itemData.Id=="1_1_1"){
+        return ;
     }
-    else{
+    
+    else if(event.itemData.Id!="1_1_1_1"){
+        let params =  event.itemData.EntityType +'.'+event.itemData.Id;
+        this.router.navigate(['/menu','CatalogEntity',{Token:params}]);
+    }
+
+
+    this.menuVisible = !this.menuVisible;
+
+    
+    // else{
         
-      //window.alert(event.node.text);
-      this.menuVisible = !this.menuVisible;
-    }
+    //   //window.alert(event.node.text);
+    //   this.menuVisible = !this.menuVisible;
+    // }
   }
 
     GotoNewView(item){
@@ -69,12 +91,13 @@ let v = item;
 
 
   private Logout(){
-
+    
     this.logoutSubscriber =  this.LogoutHandler.Logout().subscribe(
         result => {
             this.router.navigate(['/login'])
+            this.loadingVisible =  false;
               console.log(result);
-           } ,error => { this.router.navigate(['/login']); console.error(error); } )
+           } ,error => {  console.error(error); } )
  
   }
 

@@ -4,6 +4,7 @@ import { LoginComponent } from "./login/login.component";
 import { MenuComponentComponent } from "./menu-component/menu-component.component";
 import { AuthPreventer } from "./RouterPreventer/AuthPreventer";
 import {PagenotFoundComponent} from "./pagenot-found/pagenot-found.component"
+import { CatalogEntityComponent } from "./catalog-entity/catalog-entity.component";
 
 export const routes : Routes=[
 
@@ -20,6 +21,9 @@ export const routes : Routes=[
         path: "menu",
         component: MenuComponentComponent,
         canActivate: [AuthPreventer], 
+        children: [
+            { path: 'CatalogEntity', component: CatalogEntityComponent },
+        ]
     },
     {
         path: "PageNotFound",

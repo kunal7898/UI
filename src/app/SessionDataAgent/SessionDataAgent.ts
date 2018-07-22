@@ -45,5 +45,12 @@ public GetNav():JSON{
         this.sessionSt.clear();
     }
 
+    public SetMetadata(value){
+        this.sessionSt.store(AppEnums.Metadata ,value);
+    }
+
+    public Getmetadata():JSON{
+      return  JSON.parse(this.sessionSt.retrieve(AppEnums.Metadata))
+    }
 
 }

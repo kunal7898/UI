@@ -1,17 +1,23 @@
-<!-- 
 
+<div style="width:99%" >
 <dx-data-grid id="Datagrid"
    [dataSource] = "DataSource"
    [columns]= "columns"
-   [allowColumnReordering]= "allowColumnReordering"
-   [showBorders]= "showBorders"
-   [showRowLines]= "showRowLines"
-   [width]= "width"
-   [height]= "height"
-   (onCellPrepared)="onCellPrepared($event)"
-   [(editing)]= "editing"
+   [columnAutoWidth]="true"
+   (onContentReady)="onContentReady($event)"
+   
 
    
    >
+
+   <dxo-paging [enabled]="true"></dxo-paging>
+   <dxo-paging [pageSize]="10"></dxo-paging>
+
+   
   
-    </dx-data-grid> -->
+    </dx-data-grid>
+  </div>
+
+    <dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
+    [shading]="true" [closeOnOutsideClick]="false" [(message)]="LoadingMessage">
+  </dx-load-panel>

@@ -6,12 +6,13 @@ import { TreeView } from "../Models/TreeViewModel";
 export class MenuHandler{
 
 userSettings:Array<any>;
-
+DashBoard:Array<any>;
 constructor(public SessionDataAgent:SessionDataAgent){
 
 }
 
 public LoadMenuItems():Array<TreeView>{
+    this.LoadUserDashBoard();
     this.LoadUserSettings();
 return this.GetMenus();
 }
@@ -20,6 +21,16 @@ private GetMenus():Array<TreeView>{
     let cachemenus = Array.of(this.SessionDataAgent.GetNav()) as Array<any>;
     let menu = cachemenus[0] as Array<any> ;
     let menus =   Array<TreeView>();
+// Push Dashboard Settings
+this.DashBoard.forEach(element => {
+    let val  = new  TreeView;
+    val.ID = element["ID"];
+    val.text= element["text"];
+    val.EntityType= 0;
+    val.ParentID = element["ParentID"];
+    val.expanded = element["expanded"];
+    menus.push(val);
+})
     menu.forEach(element => {
         let val  = new  TreeView;
         val.ID = element["ViewId"];
@@ -39,6 +50,17 @@ private GetMenus():Array<TreeView>{
     })
 
 return menus;
+}
+
+private LoadUserDashBoard(){
+    return this.DashBoard = [
+        {
+    
+            ID: "2",
+            text: "Home/DashBoard",
+            expanded: false
+        }
+    ]
 }
 
 private LoadUserSettings():Array<any>{

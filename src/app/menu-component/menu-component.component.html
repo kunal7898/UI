@@ -11,6 +11,7 @@
               </dx-toolbar>
               <!-- <div class="rightTitle">Name: <b>{{viewName}}</b></div> -->
               <div class="rightbox">
+                  <app-dash-board></app-dash-board>
                   <router-outlet></router-outlet>
               </div>
           </div>
@@ -38,6 +39,11 @@
       </div>
       </dx-tree-view>
 
+      <dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
+      [shading]="true" [closeOnOutsideClick]="false" [(message)]="LoadingMessage">
+    </dx-load-panel>
   </div>
+
+
 
 
