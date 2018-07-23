@@ -16,11 +16,13 @@ export class FormLayoutComponent implements OnChanges {
 
   @Input() currentForm: AppShared.CurrentForm;
   EntityDataSubscriber: Subscription;
+  public Tabs: any;
   LoadingMessage : string ;
-  private SaveButton: any;
-  private FormData: any = {};
-  private FormLayout:any;
-  private loadingVisible: boolean = false;
+  public SaveButton: any;
+  public FormData: any = {};
+  public FormLayout:any;
+  public IsChildExist: boolean = false;
+  public loadingVisible: boolean = false;
   constructor(public formhanlder : FormLayoutHandler) { }
 
 

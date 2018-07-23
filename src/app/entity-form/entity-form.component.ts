@@ -12,7 +12,7 @@ import { AppConstants } from '../AppCommon/App.Constant';
 export class EntityFormComponent implements OnInit {
 
   private id: string;
-  private currentForm: AppShared.CurrentForm;
+  public currentForm: AppShared.CurrentForm;
   private sub: any;
   constructor(private route: ActivatedRoute) { }
 

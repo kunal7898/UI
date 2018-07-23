@@ -21,7 +21,6 @@
     [animationEnabled]="true"
     [swipeEnabled]="true"
     [visible]="IsChildExist"
-    (onSelectionChanged)="OnTabPanelSelectionChanged($event)"
     >
     <div *dxTemplate="let Tab of 'title'">
     <span>{{Tab.Title}}</span>
