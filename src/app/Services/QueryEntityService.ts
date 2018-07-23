@@ -13,6 +13,12 @@ export class QueryEntityService{
         
             let requestPoint =AppSettings.BASE_URL+ AppSettings.QUERYENTITY_API;
             return this.http.post<any>(requestPoint, JSON.stringify(EntityQueryRequest));
+        }
+
+  public LoadData(EntityQueryRequest: AppRequest.EntityQueryRequest):Observable<any>{
+        
+            let requestPoint =AppSettings.BASE_URL+ AppSettings.QUERYENTITY_API;
+            return this.http.post<any>(requestPoint, JSON.stringify(EntityQueryRequest));
         
           }
 }

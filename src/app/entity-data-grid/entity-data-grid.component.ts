@@ -7,6 +7,8 @@ import { QueryEntityHandler } from '../Helpers/QueryEntityHanlder';
 import { SessionDataAgent } from '../SessionDataAgent/SessionDataAgent';
 import * as $ from 'jquery';
 import { MetaDataGridModel } from '../Models/MetaDataGridModel';
+import { Router } from '@angular/router';
+import { QueryEntityModel } from '../Models/QueryEntityModel';
 
 @Component({
   selector: 'app-entity-data-grid',
@@ -23,7 +25,7 @@ export class EntityDataGridComponent implements OnChanges  {
   columns =[];
   DatagridComponent : any;
   private MetadataModel:MetaDataModel.EntityMetaDataModel;
-  constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler,  public QueryEntityHanlder:QueryEntityHandler,public SessiondataAgent : SessionDataAgent) { }
+  constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler,  public QueryEntityHanlder:QueryEntityHandler,public SessiondataAgent : SessionDataAgent,   private router: Router) { }
 
   ngOnChanges() {
     console.log(this.currentSelection);
@@ -37,7 +39,6 @@ export class EntityDataGridComponent implements OnChanges  {
   }
  
   private LoadDynamicColumnsAsync() {
-    
    let result = this.CatalogEntityDataGridHandler.LoadColumnsDynamic(this.MetadataModel) as Array<MetaDataGridModel>;
    if(result!=null){
     this.PrepareColumns(result);
@@ -59,7 +60,7 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
   let col = Array<any>();
   result.forEach((element,index) => {
     if(element.ShowControl){
-
+      var component = this;
       if (element.Code=="Code") {
         this.columns.push({
           dataField: element.Code,
@@ -68,7 +69,7 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
             $('<a/>').addClass('dx-link')
               .text(options.text)
               .click('dxclick', function () {
-               
+                component.EditEntityForm(options.data.Id);
                 console.log(options);
               }).appendTo(container);
           }
@@ -86,8 +87,9 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
 }
 
 private LoadDynamicDataSourceAsync() {
-    
-  this.QueryEntityHanlder.LoadDataSourceDynamic(this.MetadataModel).subscribe(
+  let queryModel =  new QueryEntityModel.EntityMetaDataModel;
+  queryModel.EntityType =  this.MetadataModel.EntityType;
+  this.QueryEntityHanlder.LoadDataSourceDynamic(queryModel).subscribe(
     result => {
       if(result.Data.ResponseData!=null){
         this.DataSource = result.Data.ResponseData ;
@@ -103,6 +105,10 @@ private LoadDynamicDataSourceAsync() {
 )
 }
 
+private EditEntityForm(EntityId : string){
+  let perm = this.currentSelection.EntityType + '.' + this.currentSelection.ViewIndex + '.' + EntityId;
+  this.router.navigate(['/menu', 'entity', { id: perm }]);
+}
 
 
 public onContentReady(event){

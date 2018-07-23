@@ -1,6 +1,7 @@
 import { LoginModel } from "./LoginModel";
 import { MetaDataModel } from "./MetaDataModel";
 import { QueryEntityModel } from "./QueryEntityModel";
+import { AppFilters } from "../AppCommon/Controls/App.QueryFilters";
 
 export namespace AppRequest{
 
@@ -42,6 +43,16 @@ export namespace AppRequest{
         }
     }
 
+    export class EntityDataQueryRequestMessage{
+        public QueryEntityRequest : AppRequest.EntityQueryRequest;
+        constructor(queryEntityRequest: QueryEntityModel.EntityDataModel ){
+            this.QueryEntityRequest =  new AppRequest.EntityQueryRequest();
+            this.QueryEntityRequest.EntityType =  queryEntityRequest.EntityType;
+            this.QueryEntityRequest.Filters = queryEntityRequest.Filters;
+
+        }
+    }
+
     export class LoginRequest{
        public grant_type : string = "password";
        public UserName : string;
@@ -63,7 +74,8 @@ export namespace AppRequest{
     }
 
     export class EntityQueryRequest{
-        public EntityType : number
+        public EntityType : number;
+        public Filters:Array<AppFilters.FilterModel>
      }
 
 }

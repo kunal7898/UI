@@ -24,6 +24,9 @@ import { DashBoardComponent } from './dash-board/dash-board.component';
 import { CatalogEntityComponent } from './catalog-entity/catalog-entity.component';
 import { QueryEntityHandler } from './Helpers/QueryEntityHanlder';
 import { QueryEntityService } from './Services/QueryEntityService';
+import { EntityFormComponent } from './entity-form/entity-form.component';
+import { FormLayoutComponent } from './form-layout/form-layout.component';
+import { FormLayoutHandler } from './Helpers/FormLayoutHandler';
 
 
 
@@ -35,7 +38,9 @@ import { QueryEntityService } from './Services/QueryEntityService';
     PagenotFoundComponent,
     EntityDataGridComponent,
     DashBoardComponent,
-    CatalogEntityComponent
+    CatalogEntityComponent,
+    EntityFormComponent,
+    FormLayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +61,7 @@ import { QueryEntityService } from './Services/QueryEntityService';
     AlertService,
     LogoutService,
     MenuHandler,
+    FormLayoutHandler,
     AuthPreventer,
     SessionDataAgent,
    { provide: HTTP_INTERCEPTORS, useClass: HTTPServiceInterceptor,multi: true },

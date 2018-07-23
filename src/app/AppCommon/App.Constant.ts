@@ -7,3 +7,8 @@ QUERYENTITY_API:"/api/QueryEntity",
 
 }); 
 
+export const AppConstants= Object.freeze({
+    NULL_GUID:'00000000-0000-0000-0000-000000000000'
+    //... more of your variables
+});
+

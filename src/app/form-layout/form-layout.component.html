@@ -1,0 +1,40 @@
+<div [ngClass]="IsChildExist?'contentOffGrid':'contentCenter'">
+  <dx-form id="formdata"
+    [(formData)]="FormData" 
+    [(items)]="FormLayout"
+  ></dx-form> 
+  <div  *ngIf="!IsChildExist">
+    <hr>
+    <dx-button style="float:right " [text]="SaveButton.text" [type]="SaveButton.type" (onClick)="OnSave()"></dx-button>
+    <br>
+    <br>
+    <br>
+    <br>
+  </div>
+  </div>
+  <div class="contentBottom">
+    <dx-tab-panel
+    [height]="260"
+    [dataSource]="Tabs"
+    [selectedIndex]="0"
+    [loop]="false"
+    [animationEnabled]="true"
+    [swipeEnabled]="true"
+    [visible]="IsChildExist"
+    (onSelectionChanged)="OnTabPanelSelectionChanged($event)"
+    >
+    <div *dxTemplate="let Tab of 'title'">
+    <span>{{Tab.Title}}</span>
+    </div>
+    <div *dxTemplate="let Tab of 'item'">
+    <div>
+        <!-- <app-childgrid [currentSelection]="Tab"></app-childgrid> -->
+    </div>
+    </div>
+    </dx-tab-panel>
+  </div>
+  
+ 
+  <dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
+  [shading]="true" [closeOnOutsideClick]="false" [(message)]="LoadingMessage">
+</dx-load-panel>

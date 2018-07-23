@@ -8,4 +8,5 @@ export enum AppEnums{
 export enum QueryStringParams {
     EntityType = 0,
     ViewId = 1,
+    EntityId =2
 }

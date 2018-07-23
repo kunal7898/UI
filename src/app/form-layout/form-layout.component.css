@@ -1,0 +1,24 @@
+.first-group,
+.second-group {
+    padding: 20px;
+}
+
+.contentOffGrid{
+    width: 98%;
+    overflow-x: scroll;
+    overflow-x: hidden;
+    height:400px;
+    margin-bottom: 20px
+}
+
+.contentCenter{
+    width: 98%;
+    overflow-x: scroll;
+    height:100vh;
+}
+.contentBottom{
+    width: 98%;
+    overflow-x: scroll;
+    height:300px;
+}
+

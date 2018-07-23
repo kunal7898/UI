@@ -5,6 +5,7 @@ import { MenuComponentComponent } from "./menu-component/menu-component.componen
 import { AuthPreventer } from "./RouterPreventer/AuthPreventer";
 import {PagenotFoundComponent} from "./pagenot-found/pagenot-found.component"
 import { CatalogEntityComponent } from "./catalog-entity/catalog-entity.component";
+import {EntityFormComponent} from './entity-form/entity-form.component'
 
 export const routes : Routes=[
 
@@ -23,6 +24,8 @@ export const routes : Routes=[
         canActivate: [AuthPreventer], 
         children: [
             { path: 'CatalogEntity', component: CatalogEntityComponent },
+            { path: 'entity', component: EntityFormComponent },
+             
         ]
     },
     {
