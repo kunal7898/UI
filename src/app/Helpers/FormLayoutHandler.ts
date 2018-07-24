@@ -172,8 +172,6 @@ private LoadDataSourceInternal(picklistmasterid:string,lookupentitytype:number):
       
               },
             }),
-            paginate: true,
-            pageSize: 10
           });
  
 //}
