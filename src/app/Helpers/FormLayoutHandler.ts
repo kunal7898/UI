@@ -8,11 +8,21 @@ import { MetaDataModel } from "../Models/MetaDataModel";
 import { AppRequest } from "../Models/Apprequest";
 import { QueryEntityService } from "../Services/QueryEntityService";
 import { QueryEntityModel } from "../Models/QueryEntityModel";
+import { AttributeType } from "../AppCommon/App.Enums";
+import { AppConstants, AppSettings } from "../AppCommon/App.Constant";
+import CustomStore from 'devextreme/data/custom_store';
+import DataSource from 'devextreme/data/data_source';
+import { Subscription } from "rxjs/Subscription";
+import { HttpClient } from "@angular/common/http";
+import { AppFilters } from "../AppCommon/Controls/App.QueryFilters";
 
 @Injectable()
 export class FormLayoutHandler extends BaseHandler{
 
-constructor(public SessionDataAgent:SessionDataAgent,public QueryEntityService :QueryEntityService){
+DataSourceSubscriber: Subscription;
+DataSource =[];
+datasourceinstance:any;
+constructor(public SessionDataAgent:SessionDataAgent,public QueryEntityService :QueryEntityService, protected http: HttpClient){
 super();
 }
 
@@ -45,7 +55,7 @@ private LoadInnerItems(headerItems:Array<any>,metadata:Array<MetaDataGridModel>)
                 headerItems[0].items.push({
                     dataField: value.Code,
                     editorType: this.getEditorType(value.AttributeType),
-                    editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType)),
+                    editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType),value.PicklistMasterId,value.LookupEntityType),
                     validationRules: this.getMandatoryFieldsValidation(value.Code, value.IsMandatory),
                   })
             }
@@ -60,8 +70,8 @@ private LoadInnerItems(headerItems:Array<any>,metadata:Array<MetaDataGridModel>)
             headerItems[1].items.push({
                 dataField: value.Code,
                 editorType: this.getEditorType(value.AttributeType),
-                editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType)),
-                validationRules: this.getMandatoryFieldsValidation(value.Code, value.IsMandatory),
+                editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType),value.PicklistMasterId,value.LookupEntityType),
+                validationRules: this.getMandatoryFieldsValidation(value.Name, value.IsMandatory),
               })
             }
         });
@@ -86,15 +96,15 @@ private getMandatoryFieldsValidation(Code, IsMandatory): any {
   }
 
 private getEditorType(Attributetype): any {
-    if (Attributetype == "lookup")
+    if (Attributetype == AttributeType.Lookup)
       return "dxSelectBox";
-    if (Attributetype == "Date")
+    if (Attributetype == AttributeType.Date)
       return "dxDateBox";
-    if (Attributetype == "textarea")
+    if (Attributetype == AttributeType.Textarea)
       return "dxTextArea";
-    if (Attributetype == "checkbox")
+    if (Attributetype == AttributeType.Checkbox)
       return "dxCheckBox";
-    if (Attributetype == "radiobox")
+    if (Attributetype ==AttributeType.Radiobox)
       return "dxRadioGroup";
     else
       return null;
@@ -102,15 +112,72 @@ private getEditorType(Attributetype): any {
   }
 
 
+  private getEditorOptions(Type,PicklistMasterId,LookupEntityType): any {
+    if (Type == "dxCheckBox") {
+        return {
+          disabled: false,
+          readOnly: false,
+          tabIndex: 1,
+          onValueChanged: function (e) {
 
-  private getEditorOptions(Type): any {
-      return null;
+          }
+        }
+      }
+      if (Type == "dxSelectBox"){
+          var component = this;
+        return {
+            dataSource: component.LoadDataSourceInternal(PicklistMasterId,LookupEntityType),
+            displayExpr: "Name",
+            valueExpr: "LoginId",
+            searchEnabled: true,
+            onInitialized: function (e) {
+              //window.alert("event fired");
+             component.datasourceinstance = e;
+            },
+            onValueChanged: function (e) {
+             
+             // window.alert("event fired");
+
+            }
+          };
+      }
+  
+      else
+       return null;
   }
 
 
 
+private LoadDataSourceInternal(picklistmasterid:string,lookupentitytype:number):any{
+    // if(picklistmasterid!=AppConstants.NULL_GUID){
 
-
+    // }
+    // if(lookupentitytype!=0 && lookupentitytype!=undefined){
+        var component = this;
+        return new DataSource({
+            store: new CustomStore({
+              load: function (loadOptions: any) {
+                let requestPoint =AppSettings.BASE_URL+ AppSettings.QUERYENTITY_API;
+                let response ;
+                let  request = new  AppRequest.EntityQueryRequest;
+                request.EntityType =  106;
+                return  component.http.post(requestPoint,request)
+                .toPromise()
+                .then(response => {
+                  var json = response as any;
+                  return {
+                    data: json.Data.ResponseData
+                  };
+                })
+      
+              },
+            }),
+            paginate: true,
+            pageSize: 10
+          });
+ 
+//}
+}
 
 private LoadMetadataFromCache(EntityType:number):Array<MetaDataGridModel>{
 
@@ -147,7 +214,7 @@ public LoadEntityAsync(QueryEntityModel :  QueryEntityModel.EntityDataModel):Obs
    
     let entitydataRequest =  new AppRequest.EntityDataQueryRequestMessage(QueryEntityModel);
     let  request = entitydataRequest.QueryEntityRequest as    AppRequest.EntityQueryRequest;
-    let response = this.QueryEntityService.LoadData(request);
+    //let response = this.QueryEntityService.LoadData(request);
     this.QueryEntityService.LoadData(request).subscribe( result => {
         this.source.next(result);
     },

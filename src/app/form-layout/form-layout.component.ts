@@ -46,7 +46,7 @@ private InitComponent(){
 
 private PrepareRequest():QueryEntityModel.EntityDataModel{
   let queryPrms = new Array<AppFilters.FilterModel>();
-  queryPrms.push({PropertyName:"Code",Operation:"Equals",Value:"MH27AL"});
+  queryPrms.push({PropertyName:"Id",Operation:"EqualsGuid",Value:this.currentForm.EntityId});
   let request = new  QueryEntityModel.EntityDataModel;
   request.EntityType = this.currentForm.EntityType;
   request.Filters = queryPrms;

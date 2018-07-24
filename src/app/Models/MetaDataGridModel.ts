@@ -9,4 +9,7 @@ export class MetaDataGridModel{
     public IsMandatory :boolean;
     public Readonly : boolean;
     public ShowControl:boolean;
+    public IsPrimaryEntity:boolean;
+    public PicklistMasterId:string;
+    public LookupEntityType :number; 
 }

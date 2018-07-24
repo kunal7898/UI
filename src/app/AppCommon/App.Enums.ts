@@ -10,3 +10,12 @@ export enum QueryStringParams {
     ViewId = 1,
     EntityId =2
 }
+
+export enum AttributeType{
+    String =1,
+    Checkbox=2,
+    Lookup =3,
+    Date = 4,
+    Textarea =5,
+    Radiobox=6
+}

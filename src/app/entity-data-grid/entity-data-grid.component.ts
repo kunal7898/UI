@@ -61,7 +61,7 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
   result.forEach((element,index) => {
     if(element.ShowControl){
       var component = this;
-      if (element.Code=="Code") {
+      if (element.Code=="Code" || element.Code=="DocName") {
         this.columns.push({
           dataField: element.Code,
           caption :element.Name,
