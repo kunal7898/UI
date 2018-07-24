@@ -12,6 +12,8 @@ export namespace QueryEntityModel{
    // Declartion
    public EntityType : number;
    public EntityId:string;
+   public IsCatalogView :boolean;
+
  }
 
  export class EntityDataModel extends ModelBase<EntityMetaDataModel>{
@@ -20,6 +22,7 @@ export namespace QueryEntityModel{
   // Declartion
   public EntityType : number;
   public Filters:Array<AppFilters.FilterModel>;
+  public IsCatalogView :boolean;
 }
 
 

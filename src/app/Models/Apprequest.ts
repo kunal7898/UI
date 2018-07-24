@@ -39,6 +39,7 @@ export namespace AppRequest{
         constructor(queryEntityRequest: QueryEntityModel.EntityMetaDataModel ){
             this.QueryEntityRequest =  new AppRequest.EntityQueryRequest();
             this.QueryEntityRequest.EntityType =  queryEntityRequest.EntityType;
+            this.QueryEntityRequest.IsCatalogView = queryEntityRequest.IsCatalogView;
 
         }
     }
@@ -49,6 +50,7 @@ export namespace AppRequest{
             this.QueryEntityRequest =  new AppRequest.EntityQueryRequest();
             this.QueryEntityRequest.EntityType =  queryEntityRequest.EntityType;
             this.QueryEntityRequest.Filters = queryEntityRequest.Filters;
+            this.QueryEntityRequest.IsCatalogView = queryEntityRequest.IsCatalogView;
 
         }
     }
@@ -76,6 +78,7 @@ export namespace AppRequest{
     export class EntityQueryRequest{
         public EntityType : number;
         public Filters:Array<AppFilters.FilterModel>
+        public IsCatalogView:boolean;
      }
 
 }

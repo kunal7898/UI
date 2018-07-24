@@ -89,6 +89,7 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
 private LoadDynamicDataSourceAsync() {
   let queryModel =  new QueryEntityModel.EntityMetaDataModel;
   queryModel.EntityType =  this.MetadataModel.EntityType;
+  queryModel.IsCatalogView = true;
   this.QueryEntityHanlder.LoadDataSourceDynamic(queryModel).subscribe(
     result => {
       if(result.Data.ResponseData!=null){
