@@ -27,6 +27,7 @@ import { QueryEntityService } from './Services/QueryEntityService';
 import { EntityFormComponent } from './entity-form/entity-form.component';
 import { FormLayoutComponent } from './form-layout/form-layout.component';
 import { FormLayoutHandler } from './Helpers/FormLayoutHandler';
+import { UpdateEntityService } from './Services/UpdateEntityService';
 
 
 
@@ -60,6 +61,7 @@ import { FormLayoutHandler } from './Helpers/FormLayoutHandler';
     QueryEntityService,
     AlertService,
     LogoutService,
+    UpdateEntityService,
     MenuHandler,
     FormLayoutHandler,
     AuthPreventer,

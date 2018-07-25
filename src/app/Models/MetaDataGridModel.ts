@@ -1,4 +1,5 @@
 export class MetaDataGridModel{
+    public Id:string;
     public SchemaId : string;
     public EntityType :number;
     public Code : string;
@@ -12,4 +13,6 @@ export class MetaDataGridModel{
     public IsPrimaryEntity:boolean;
     public PicklistMasterId:string;
     public LookupEntityType :number; 
+    public DisplayMember : string;
+    public ValueMember :string;
 }

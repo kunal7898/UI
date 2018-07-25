@@ -5,6 +5,7 @@ import { AppConstants } from '../AppCommon/App.Constant';
 import { Subscription } from 'rxjs/Subscription';
 import { QueryEntityModel } from '../Models/QueryEntityModel';
 import { AppFilters } from '../AppCommon/Controls/App.QueryFilters';
+import { UpdateEntityModel } from '../Models/UpdateEntityModel';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class FormLayoutComponent implements OnChanges {
 
   @Input() currentForm: AppShared.CurrentForm;
   EntityDataSubscriber: Subscription;
+  UpdateDataSubscriber:Subscription;
   public Tabs: any;
   LoadingMessage : string ;
   public SaveButton: any;
@@ -74,6 +76,26 @@ private LoadEntity():any{
   }
 
    public OnSave() {
-    alert(JSON.stringify(this.FormData));
+    this.LoadingMessage ="Saving Data...";
+    this.loadingVisible = true;
+    this.UpdateEntity(this.FormData as JSON);
+  }
+
+  private PrepareUpdateRequest(Data:JSON):UpdateEntityModel.UpdateDataModel{
+    let request = new  UpdateEntityModel.UpdateDataModel;
+    request.EntityType = this.currentForm.EntityType;
+    request.Data  = Data;
+    return request;
+  }
+
+  private UpdateEntity(Data:JSON):any{
+    let req = this.PrepareUpdateRequest(Data);
+    this.UpdateDataSubscriber =  this.formhanlder.UpdateEntityAsync(req).subscribe(
+      result => {
+        this.loadingVisible =  false;
+         console.log(result);
+         }
+  
+  )
   }
 }

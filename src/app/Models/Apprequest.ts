@@ -2,6 +2,7 @@ import { LoginModel } from "./LoginModel";
 import { MetaDataModel } from "./MetaDataModel";
 import { QueryEntityModel } from "./QueryEntityModel";
 import { AppFilters } from "../AppCommon/Controls/App.QueryFilters";
+import { UpdateEntityModel } from "./UpdateEntityModel";
 
 export namespace AppRequest{
 
@@ -44,6 +45,18 @@ export namespace AppRequest{
         }
     }
 
+       
+    export class EntityUpdateRequestMessage{
+        public UpdateEntityRequest : AppRequest.EntityUpdateRequest;
+        constructor(updateEntityRequest: UpdateEntityModel.UpdateDataModel ){
+            this.UpdateEntityRequest =  new AppRequest.EntityUpdateRequest();
+            this.UpdateEntityRequest.EntityType =  updateEntityRequest.EntityType;
+            this.UpdateEntityRequest.Data  = updateEntityRequest.Data;
+            this.UpdateEntityRequest.EntityFieldId  = updateEntityRequest.EntityFieldId;
+
+        }
+    }
+
     export class EntityDataQueryRequestMessage{
         public QueryEntityRequest : AppRequest.EntityQueryRequest;
         constructor(queryEntityRequest: QueryEntityModel.EntityDataModel ){
@@ -79,6 +92,12 @@ export namespace AppRequest{
         public EntityType : number;
         public Filters:Array<AppFilters.FilterModel>
         public IsCatalogView:boolean;
+     }
+
+     export class EntityUpdateRequest{
+        public EntityType : number;
+        public EntityFieldId:string
+        public Data:JSON;
      }
 
 }

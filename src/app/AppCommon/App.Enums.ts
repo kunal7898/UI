@@ -19,3 +19,9 @@ export enum AttributeType{
     Textarea =5,
     Radiobox=6
 }
+
+export enum DefaultTypes{
+    Add = 1,
+    Update =2,
+    Delete =3,
+}

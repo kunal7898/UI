@@ -8,21 +8,23 @@ import { MetaDataModel } from "../Models/MetaDataModel";
 import { AppRequest } from "../Models/Apprequest";
 import { QueryEntityService } from "../Services/QueryEntityService";
 import { QueryEntityModel } from "../Models/QueryEntityModel";
-import { AttributeType } from "../AppCommon/App.Enums";
+import { AttributeType, DefaultTypes } from "../AppCommon/App.Enums";
 import { AppConstants, AppSettings } from "../AppCommon/App.Constant";
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { Subscription } from "rxjs/Subscription";
 import { HttpClient } from "@angular/common/http";
 import { AppFilters } from "../AppCommon/Controls/App.QueryFilters";
+import { UpdateEntityModel } from "../Models/UpdateEntityModel";
+import { UpdateEntityService } from "../Services/UpdateEntityService";
 
 @Injectable()
 export class FormLayoutHandler extends BaseHandler{
 
 DataSourceSubscriber: Subscription;
-DataSource =[];
+DataSource :DataSource;
 datasourceinstance:any;
-constructor(public SessionDataAgent:SessionDataAgent,public QueryEntityService :QueryEntityService, protected http: HttpClient){
+constructor(public SessionDataAgent:SessionDataAgent,public QueryEntityService :QueryEntityService, protected http: HttpClient,public UpdateEntityService:UpdateEntityService){
 super();
 }
 
@@ -48,34 +50,18 @@ private LoadHeaderItems():Array<any>{
 
 private LoadInnerItems(headerItems:Array<any>,metadata:Array<MetaDataGridModel>):Array<any>{
 
-    let fisrtcomponents  =  metadata.splice(0,3);
-    if(fisrtcomponents.length>0){
-        fisrtcomponents.forEach(value =>{
-            if(value.ShowControl){
+         metadata.forEach(value =>{
+            if(value.ShowControl){ 
                 headerItems[0].items.push({
                     dataField: value.Code,
                     editorType: this.getEditorType(value.AttributeType),
-                    editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType),value.PicklistMasterId,value.LookupEntityType),
+                    editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType),value ),
                     validationRules: this.getMandatoryFieldsValidation(value.Code, value.IsMandatory),
                   })
             }
           
         });
-    }
-
-    let Secondcomponents  =  metadata.splice(4,7);
-    if(fisrtcomponents.length>0){
-        Secondcomponents.forEach(value =>{
-            if(value.ShowControl){
-            headerItems[1].items.push({
-                dataField: value.Code,
-                editorType: this.getEditorType(value.AttributeType),
-                editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType),value.PicklistMasterId,value.LookupEntityType),
-                validationRules: this.getMandatoryFieldsValidation(value.Name, value.IsMandatory),
-              })
-            }
-        });
-    }
+  
 
 return headerItems;
 }
@@ -112,7 +98,7 @@ private getEditorType(Attributetype): any {
   }
 
 
-  private getEditorOptions(Type,PicklistMasterId,LookupEntityType): any {
+  private getEditorOptions(Type,metadataModel:MetaDataGridModel): any {
     if (Type == "dxCheckBox") {
         return {
           disabled: false,
@@ -126,9 +112,9 @@ private getEditorType(Attributetype): any {
       if (Type == "dxSelectBox"){
           var component = this;
         return {
-            dataSource: component.LoadDataSourceInternal(PicklistMasterId,LookupEntityType),
-            displayExpr: "Name",
-            valueExpr: "LoginId",
+            dataSource: component.LoadDataSourceInternal(metadataModel.PicklistMasterId,metadataModel.LookupEntityType),
+            displayExpr: metadataModel.DisplayMember,
+            valueExpr: "Email",
             searchEnabled: true,
             onInitialized: function (e) {
               //window.alert("event fired");
@@ -148,33 +134,36 @@ private getEditorType(Attributetype): any {
 
 
 
-private LoadDataSourceInternal(picklistmasterid:string,lookupentitytype:number):any{
-    // if(picklistmasterid!=AppConstants.NULL_GUID){
+private LoadDataSourceInternal(picklistmasterid?:string,lookupentitytype?:number):CustomStore{
+    if(picklistmasterid!=AppConstants.NULL_GUID){
 
-    // }
-    // if(lookupentitytype!=0 && lookupentitytype!=undefined){
+     }
+     if(lookupentitytype!=0 && lookupentitytype!=undefined){
         var component = this;
-        return new DataSource({
-            store: new CustomStore({
-              load: function (loadOptions: any) {
-                let requestPoint =AppSettings.BASE_URL+ AppSettings.QUERYENTITY_API;
-                let response ;
-                let  request = new  AppRequest.EntityQueryRequest;
-                request.EntityType =  106;
-                return  component.http.post(requestPoint,request)
-                .toPromise()
-                .then(response => {
-                  var json = response as any;
-                  return {
-                    data: json.Data.ResponseData
-                  };
-                })
-      
-              },
-            }),
-          });
+        return new CustomStore({
+          key:"LoginId",
+          load: function (loadOptions: any) {
+            let requestPoint =AppSettings.BASE_URL+ AppSettings.QUERYENTITY_API;
+            let response ;
+            let  request = new  AppRequest.EntityQueryRequest;
+            request.EntityType =  106;
+            return  component.http.post(requestPoint,request)
+            .toPromise()
+            .then(response => {
+              var json = response as any;
+              return {
+                data: json.Data.ResponseData,
+                totalCount:json.Data.ResponseData.length
+              };
+            }).catch(error => { window.alert(error) })
+  
+          },
+          byKey:function(key){
+            return null;
+          }
+        });
  
-//}
+}
 }
 
 private LoadMetadataFromCache(EntityType:number):Array<MetaDataGridModel>{
@@ -222,5 +211,27 @@ public LoadEntityAsync(QueryEntityModel :  QueryEntityModel.EntityDataModel):Obs
     
     
     }
+
+
+  public UpdateEntityAsync(UpdateEntityModel : UpdateEntityModel.UpdateDataModel):Observable<any> {
+
+    let entitydataRequest =  new AppRequest.EntityUpdateRequestMessage(UpdateEntityModel);
+    let  request = entitydataRequest.UpdateEntityRequest as  AppRequest.EntityUpdateRequest;
+    let cacheMetadata = Array.of(this.SessionDataAgent.Getmetadata()) as Array<any>;
+    if(cacheMetadata!=null){
+     let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==UpdateEntityModel.EntityType && s.DefaultValue==DefaultTypes.Update) as MetaDataGridModel;
+     request.EntityFieldId =  "DC1C7755-7F79-4E9A-8D1C-04ADB961F181";
+    }
+
+    this.UpdateEntityService.UpdateEntity(request).subscribe( result => {
+        this.source.next(result);
+        
+    },
+    error => { console.error(error); })
+    
+    return (this.AsObservable()) ;
+    }
+
+
 
 }
