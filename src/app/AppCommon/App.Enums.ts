@@ -2,6 +2,7 @@ export enum AppEnums{
    AccessToken = "access_token",
    UserNav = "UserViews",
    Metadata = "Metadata",
+   UserSettings="Settings"
    
 }
 

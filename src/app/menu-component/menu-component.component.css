@@ -1,6 +1,6 @@
 #info {
     width: 200px;
-    height: 200px;
+    /* height: 200px; */
     text-align: center;
     margin: 0 auto;
     margin-top: 10px;
@@ -18,7 +18,7 @@
 .slideout-container {
     height: auto;
     position: absolute;
-    top:5px; 
+    top:70px; 
     bottom: 0;
     width:99%;
 }

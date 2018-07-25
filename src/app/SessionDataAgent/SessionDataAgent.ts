@@ -1,6 +1,8 @@
 import { SessionStorageService,LocalStorageService } from 'ngx-webstorage';
 import { Injectable } from '@angular/core';
 import { AppEnums } from '../AppCommon/App.Enums';
+import { UserDataModel } from '../Models/UserModel';
+
 
 @Injectable()
 export class SessionDataAgent{
@@ -53,4 +55,13 @@ public GetNav():JSON{
       return  JSON.parse(this.sessionSt.retrieve(AppEnums.Metadata))
     }
 
+
+    public SetUserSettings(value:UserDataModel.UserModel){
+        this.sessionSt.store(AppEnums.UserSettings ,value);
+
+    }
+
+    public GetuserSettings():UserDataModel.UserModel{
+        return  this.sessionSt.retrieve(AppEnums.UserSettings) as UserDataModel.UserModel;
+      }
 }

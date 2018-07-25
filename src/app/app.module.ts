@@ -28,6 +28,9 @@ import { EntityFormComponent } from './entity-form/entity-form.component';
 import { FormLayoutComponent } from './form-layout/form-layout.component';
 import { FormLayoutHandler } from './Helpers/FormLayoutHandler';
 import { UpdateEntityService } from './Services/UpdateEntityService';
+import { LogoComponentComponent } from './Header/logo-component/logo-component.component';
+import { HeaderComponent } from './Header/header/header.component';
+import { ProfileComponent } from './Header/profile/profile.component';
 
 
 
@@ -41,7 +44,10 @@ import { UpdateEntityService } from './Services/UpdateEntityService';
     DashBoardComponent,
     CatalogEntityComponent,
     EntityFormComponent,
-    FormLayoutComponent
+    FormLayoutComponent,
+    LogoComponentComponent,
+    HeaderComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

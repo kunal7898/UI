@@ -39,15 +39,15 @@ this.DashBoard.forEach(element => {
         menus.push(val);
     });
      // Push Settings
-     this.userSettings.forEach(element => {
-        let val  = new  TreeView;
-        val.ID = element["ID"];
-        val.text= element["text"];
-        val.EntityType= 0;
-        val.ParentID = element["ParentID"];
-        val.expanded = element["expanded"];
-        menus.push(val);
-    })
+    //  this.userSettings.forEach(element => {
+    //     let val  = new  TreeView;
+    //     val.ID = element["ID"];
+    //     val.text= element["text"];
+    //     val.EntityType= 0;
+    //     val.ParentID = element["ParentID"];
+    //     val.expanded = element["expanded"];
+    //     menus.push(val);
+    // })
 
 return menus;
 }

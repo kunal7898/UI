@@ -6,6 +6,7 @@ import { Injectable } from "@angular/core";
 import { Subject } from "rxjs/Subject";
 import { BaseHandler } from "./BaseHandler";
 import { SessionDataAgent } from "../SessionDataAgent/SessionDataAgent";
+import { UserDataModel } from "../Models/UserModel";
 @Injectable()
 export class LoginHandler extends BaseHandler{
 response : any;
@@ -36,6 +37,9 @@ public OnLoginSuccess(result:AppRequest.LoginResponse){
         this.SessionDataAgent.SetMetadata(result.Metadata);
         this.SessionDataAgent.SetAccessToken(result.access_token);
         this.SessionDataAgent.SetNav(result.UserViews);
+        let vResult = result as UserDataModel.UserModel;
+        this.SessionDataAgent.SetUserSettings(vResult);
+
     }
 
 }
