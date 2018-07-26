@@ -9,6 +9,10 @@ import * as $ from 'jquery';
 import { MetaDataGridModel } from '../Models/MetaDataGridModel';
 import { Router } from '@angular/router';
 import { QueryEntityModel } from '../Models/QueryEntityModel';
+import { AppConstants } from '../AppCommon/App.Constant';
+import { DeleteEntityHandler } from '../Helpers/DeleteEntityHanlder';
+import { DeleteEntityModel } from '../Models/DeleteEntityModel';
+import { DefaultTypes } from '../AppCommon/App.Enums';
 
 @Component({
   selector: 'app-entity-data-grid',
@@ -33,10 +37,9 @@ export class EntityDataGridComponent implements OnChanges  {
     text: 'Delete',
     type: 'success'
   };
-  constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler,  public QueryEntityHanlder:QueryEntityHandler,public SessiondataAgent : SessionDataAgent,   private router: Router) { }
+  constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler,  public QueryEntityHanlder:QueryEntityHandler,public SessiondataAgent : SessionDataAgent,   private router: Router,public DeleteEntityHanlder:DeleteEntityHandler) { }
 
   ngOnChanges() {
-    console.log(this.currentSelection);
     this.LoadingMessage = "Loading Data..";
     this.loadingVisible = true;
     this.MetadataModel =  new MetaDataModel.EntityMetaDataModel();
@@ -78,7 +81,6 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
               .text(options.text)
               .click('dxclick', function () {
                 component.EditEntityForm(options.data.Id);
-                console.log(options);
               }).appendTo(container);
           }
         })
@@ -107,8 +109,6 @@ private LoadDynamicDataSourceAsync() {
       else{
         this.loadingVisible=false;
       }
-   
-     console.log(result);
        }
 
 )
@@ -119,9 +119,40 @@ private EditEntityForm(EntityId : string){
   this.router.navigate(['/menu', 'entity', { id: perm }]);
 }
 
+private NewEntityForm(){
+  let perm = this.currentSelection.EntityType + '.' + this.currentSelection.ViewIndex + '.' + AppConstants.NULL_GUID;
+  this.router.navigate(['/menu', 'entity', { id: perm }]);
+} 
 
 public onContentReady(event){
   this.DatagridComponent = event.component;
+}
+
+
+public onRowRemoving(event){
+  this.LoadingMessage = "Deleting Data..";
+  this.loadingVisible = true;
+  let DeleteModel =  new DeleteEntityModel.DeleteDataModel;
+  DeleteModel.EntityType =  this.MetadataModel.EntityType;
+  DeleteModel.Data = event.data;
+  let cacheMetadata = Array.of(this.SessiondataAgent.Getmetadata()) as Array<any>;
+  if(cacheMetadata!=null){
+   let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==this.MetadataModel.EntityType && s.DefaultValue==DefaultTypes.Delete) as MetaDataGridModel;
+   DeleteModel.EntityFieldId =  "85841292-de83-43f4-ac2d-9c3c67cf033a";
+  }
+  this.DeleteEntityHanlder.DeleteEntityData(DeleteModel).subscribe(
+    result => {
+      if(result.Data!=undefined && result.Data.ResponseData!=null){
+        this.DataSource = result.Data.ResponseData ;
+        this.loadingVisible = false;
+      }
+      else{
+        this.loadingVisible=false;
+      }
+   
+       }
+
+)
 }
 
 }

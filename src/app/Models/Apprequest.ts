@@ -3,6 +3,8 @@ import { MetaDataModel } from "./MetaDataModel";
 import { QueryEntityModel } from "./QueryEntityModel";
 import { AppFilters } from "../AppCommon/Controls/App.QueryFilters";
 import { UpdateEntityModel } from "./UpdateEntityModel";
+import { CreateEntityModel } from "./CreateEntityModel";
+import { DeleteEntityModel } from "./DeleteEntityModel";
 
 export namespace AppRequest{
 
@@ -37,12 +39,22 @@ export namespace AppRequest{
     
     export class EntityQueryRequestMessage{
         public QueryEntityRequest : AppRequest.EntityQueryRequest;
-        constructor(queryEntityRequest: QueryEntityModel.EntityMetaDataModel ){
-            this.QueryEntityRequest =  new AppRequest.EntityQueryRequest();
-            this.QueryEntityRequest.EntityType =  queryEntityRequest.EntityType;
-            this.QueryEntityRequest.IsCatalogView = queryEntityRequest.IsCatalogView;
+        constructor(queryEntityRequest?: QueryEntityModel.EntityMetaDataModel,queryEntityDataRequest?:QueryEntityModel.EntityDataModel ){
+
+            if(queryEntityRequest!=null){
+                this.QueryEntityRequest =  new AppRequest.EntityQueryRequest();
+                this.QueryEntityRequest.EntityType =  queryEntityRequest.EntityType;
+                this.QueryEntityRequest.IsCatalogView = queryEntityRequest.IsCatalogView;
+            }
+            if(queryEntityDataRequest!=null){
+                this.QueryEntityRequest =  new AppRequest.EntityQueryRequest();
+                this.QueryEntityRequest.EntityType =  queryEntityDataRequest.EntityType;
+                this.QueryEntityRequest.IsCatalogView = queryEntityDataRequest.IsCatalogView;
+            }
+           
 
         }
+       
     }
 
        
@@ -53,6 +65,28 @@ export namespace AppRequest{
             this.UpdateEntityRequest.EntityType =  updateEntityRequest.EntityType;
             this.UpdateEntityRequest.Data  = updateEntityRequest.Data;
             this.UpdateEntityRequest.EntityFieldId  = updateEntityRequest.EntityFieldId;
+
+        }
+    }
+
+    export class EntityCreateRequestMessage{
+        public CreateEntityRequest : AppRequest.EntityCreateRequest;
+        constructor(createEntityRequest: CreateEntityModel.CreateDataModel ){
+            this.CreateEntityRequest =  new AppRequest.EntityCreateRequest();
+            this.CreateEntityRequest.EntityType =  createEntityRequest.EntityType;
+            this.CreateEntityRequest.Data  = createEntityRequest.Data;
+            this.CreateEntityRequest.EntityFieldId  = createEntityRequest.EntityFieldId;
+
+        }
+    }
+
+    export class EntityDeleteRequestMessage{
+        public DeleteEntityRequest : AppRequest.EntityDeleteRequest;
+        constructor(deleteEntityRequest: DeleteEntityModel.DeleteDataModel ){
+            this.DeleteEntityRequest =  new AppRequest.EntityDeleteRequest();
+            this.DeleteEntityRequest.EntityType =  deleteEntityRequest.EntityType;
+            this.DeleteEntityRequest.Data  = deleteEntityRequest.Data;
+            this.DeleteEntityRequest.EntityFieldId  = deleteEntityRequest.EntityFieldId;
 
         }
     }
@@ -99,5 +133,19 @@ export namespace AppRequest{
         public EntityFieldId:string
         public Data:any;
      }
+
+     export class EntityCreateRequest{
+        public EntityType : number;
+        public EntityFieldId:string
+        public Data:any;
+     }
+
+     export class EntityDeleteRequest{
+        public EntityType : number;
+        public EntityFieldId:string
+        public Data:any;
+     }
+
+
 
 }

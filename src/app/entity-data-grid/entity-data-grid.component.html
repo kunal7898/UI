@@ -1,8 +1,5 @@
 <dx-button style="float:right;margin-bottom: 21px;
-float: inherit " [text]="AddButton.text" [type]="AddButton.type"></dx-button>
-
-<dx-button style="float:right;margin-bottom: 21px;
-float: inherit " [text]="DeleteButton.text" [type]="DeleteButton.type" ></dx-button>
+float: inherit " [text]="AddButton.text" [type]="AddButton.type" (onClick)="NewEntityForm()"></dx-button>
 
 <div style="width:99%" >
     
@@ -11,14 +8,18 @@ float: inherit " [text]="DeleteButton.text" [type]="DeleteButton.type" ></dx-but
    [columns]= "columns"
    [columnAutoWidth]="true"
    (onContentReady)="onContentReady($event)"
-   
+   (onRowRemoving)="onRowRemoving($event)"
 
    
    >
 
    <dxo-paging [enabled]="true"></dxo-paging>
    <dxo-paging [pageSize]="10"></dxo-paging>
-
+   <dxo-editing 
+   mode="row"
+   [allowDeleting]="true"
+  >
+</dxo-editing>
    
   
     </dx-data-grid>

@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { QueryEntityModel } from '../Models/QueryEntityModel';
 import { AppFilters } from '../AppCommon/Controls/App.QueryFilters';
 import { UpdateEntityModel } from '../Models/UpdateEntityModel';
+import { AlertService } from '../Services/AlertService';
+import { CreateEntityModel } from '../Models/CreateEntityModel';
 
 
 @Component({
@@ -18,6 +20,7 @@ export class FormLayoutComponent implements OnChanges {
   @Input() currentForm: AppShared.CurrentForm;
   EntityDataSubscriber: Subscription;
   UpdateDataSubscriber:Subscription;
+  CreateDataSubscriber:Subscription;
   public Tabs: any;
   LoadingMessage : string ;
   public SaveButton: any;
@@ -25,7 +28,7 @@ export class FormLayoutComponent implements OnChanges {
   public FormLayout:any;
   public IsChildExist: boolean = false;
   public loadingVisible: boolean = false;
-  constructor(public formhanlder : FormLayoutHandler) { }
+  constructor(public formhanlder : FormLayoutHandler,public AlertService:AlertService) { }
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -38,9 +41,12 @@ private InitComponent(){
   this.LoadingMessage = "Loading Data..";
   this.loadingVisible = true;
   this.SetSaveButtonOptions();
-  this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType);
   if(this.currentForm.EntityId!=AppConstants.NULL_GUID){
+    this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType,false);
     this.LoadEntity()
+  }else{
+    this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType,true);
+    this.loadingVisible= false;
   }
  
 
@@ -80,11 +86,24 @@ private LoadEntity():any{
     this.loadingVisible = true;
     var n = this.FormData as JSON;
     var c =  [n];
-    this.UpdateEntity(c);
+    if(this.currentForm.EntityId!=AppConstants.NULL_GUID){
+      this.UpdateEntity(c);
+    }
+    else{
+      this.CreateEntity(c);
+    }
+    
   }
 
   private PrepareUpdateRequest(Data:any):UpdateEntityModel.UpdateDataModel{
     let request = new  UpdateEntityModel.UpdateDataModel;
+    request.EntityType = this.currentForm.EntityType;
+    request.Data  = Data;
+    return request;
+  }
+
+  private PrepareCreateRequest(Data:any):CreateEntityModel.CreateDataModel{
+    let request = new  CreateEntityModel.CreateDataModel;
     request.EntityType = this.currentForm.EntityType;
     request.Data  = Data;
     return request;
@@ -95,6 +114,31 @@ private LoadEntity():any{
     this.UpdateDataSubscriber =  this.formhanlder.UpdateEntityAsync(req).subscribe(
       result => {
         this.loadingVisible =  false;
+        if(result.IsUpdateSucessfull)
+        {
+          this.AlertService.InfoAlert(result.ResponseMessage,"Entity Update");
+        }
+        else{
+          this.AlertService.FailAlert(result.ResponseMessage,"Entity update failed");
+        }
+         console.log(result);
+         }
+  
+  )
+  }
+
+  private CreateEntity(Data:any):any{
+    let req = this.PrepareCreateRequest(Data);
+    this.CreateDataSubscriber =  this.formhanlder.CreateEntityAsync(req).subscribe(
+      result => {
+        this.loadingVisible =  false;
+        if(result.IsUpdateSucessfull)
+        {
+          this.AlertService.InfoAlert(result.ResponseMessage,"Entity Create");
+        }
+        else{
+          this.AlertService.FailAlert(result.ResponseMessage,"Entity Create failed");
+        }
          console.log(result);
          }
   

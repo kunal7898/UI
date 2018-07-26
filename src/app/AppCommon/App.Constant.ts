@@ -5,6 +5,8 @@ LOADMETADATA_API:"/api/LoadMetadata",
 LOGOUT_API:"/api/SignOut",
 QUERYENTITY_API:"/api/QueryEntity",
 UPDATEENTITY_API:"/api/UpdateEntity",
+CREATEENTITY_API:"/api/CreateEntity",
+DELETEENTITY_API:"/api/DeleteEntity",
 
 }); 
 

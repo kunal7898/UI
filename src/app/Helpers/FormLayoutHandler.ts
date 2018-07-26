@@ -6,7 +6,6 @@ import { BaseHandler } from "./BaseHandler";
 import { Observable } from "rxjs/Observable";
 import { MetaDataModel } from "../Models/MetaDataModel";
 import { AppRequest } from "../Models/Apprequest";
-import { QueryEntityService } from "../Services/QueryEntityService";
 import { QueryEntityModel } from "../Models/QueryEntityModel";
 import { AttributeType, DefaultTypes } from "../AppCommon/App.Enums";
 import { AppConstants, AppSettings } from "../AppCommon/App.Constant";
@@ -16,7 +15,12 @@ import { Subscription } from "rxjs/Subscription";
 import { HttpClient } from "@angular/common/http";
 import { AppFilters } from "../AppCommon/Controls/App.QueryFilters";
 import { UpdateEntityModel } from "../Models/UpdateEntityModel";
-import { UpdateEntityService } from "../Services/UpdateEntityService";
+import { CreateEntityModel } from "../Models/CreateEntityModel";
+import { QueryEntityHandler } from "./QueryEntityHanlder";
+import { UpdateEntityHandler } from "./UpdateEntityHandler";
+import { CreateEntityHandler } from "./CreateEntityHandler";
+import { DeleteEntityHandler } from "./DeleteEntityHanlder";
+import { DeleteEntityModel } from "../Models/DeleteEntityModel";
 
 @Injectable()
 export class FormLayoutHandler extends BaseHandler{
@@ -24,15 +28,15 @@ export class FormLayoutHandler extends BaseHandler{
 DataSourceSubscriber: Subscription;
 DataSource :DataSource;
 datasourceinstance:any;
-constructor(public SessionDataAgent:SessionDataAgent,public QueryEntityService :QueryEntityService, protected http: HttpClient,public UpdateEntityService:UpdateEntityService){
+constructor(public SessionDataAgent:SessionDataAgent,public QueryEntityHandler :QueryEntityHandler, protected http: HttpClient,public UpdateEntityHandler:UpdateEntityHandler,public CreateEntityHandler:CreateEntityHandler,public DeleteEntityHandler:DeleteEntityHandler){
 super();
 }
 
-public LoadFormLayout(EntityType:number){
+public LoadFormLayout(EntityType:number,Isnew:boolean){
 let metadatafromcache =  this.LoadMetadataFromCache(EntityType);
 if(metadatafromcache!=null){
   let headerItems =  this.LoadHeaderItems();
-return this.LoadInnerItems(headerItems,metadatafromcache);
+return this.LoadInnerItems(headerItems,metadatafromcache,Isnew);
 
 }
 return null;
@@ -48,14 +52,14 @@ private LoadHeaderItems():Array<any>{
     return headerItems;
 }
 
-private LoadInnerItems(headerItems:Array<any>,metadata:Array<MetaDataGridModel>):Array<any>{
+private LoadInnerItems(headerItems:Array<any>,metadata:Array<MetaDataGridModel>,Isnew :boolean):Array<any>{
 
          metadata.forEach(value =>{
             if(value.ShowControl){ 
                 headerItems[0].items.push({
                     dataField: value.Code,
                     editorType: this.getEditorType(value.AttributeType),
-                    editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType),value ),
+                    editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType),value,Isnew ),
                     validationRules: this.getMandatoryFieldsValidation(value.Code, value.IsMandatory),
                   })
             }
@@ -92,13 +96,15 @@ private getEditorType(Attributetype): any {
       return "dxCheckBox";
     if (Attributetype ==AttributeType.Radiobox)
       return "dxRadioGroup";
+      if (Attributetype ==AttributeType.String)
+      return "dxTextBox";
     else
       return null;
 
   }
 
 
-  private getEditorOptions(Type,metadataModel:MetaDataGridModel): any {
+  private getEditorOptions(Type,metadataModel:MetaDataGridModel,Isnew:boolean): any {
     if (Type == "dxCheckBox") {
         return {
           disabled: false,
@@ -107,6 +113,11 @@ private getEditorType(Attributetype): any {
           onValueChanged: function (e) {
 
           }
+        }
+      }
+      if (Type == "dxTextBox" && !Isnew) {
+        return {
+          disabled: metadataModel.Readonly,
         }
       }
       if (Type == "dxSelectBox"){
@@ -199,39 +210,69 @@ private CreateSecondGroup():AppFormControls.FormControls{
 
 public LoadEntityAsync(QueryEntityModel :  QueryEntityModel.EntityDataModel):Observable<any>{
    
-    let entitydataRequest =  new AppRequest.EntityDataQueryRequestMessage(QueryEntityModel);
-    let  request = entitydataRequest.QueryEntityRequest as    AppRequest.EntityQueryRequest;
-    //let response = this.QueryEntityService.LoadData(request);
-    this.QueryEntityService.LoadData(request).subscribe( result => {
-        this.source.next(result);
-    },
-    error => { console.error(error); })
-    
-    return (this.AsObservable()) ;
-    
-    
-    }
+    this.QueryEntityHandler.LoadDataDynamic(QueryEntityModel).subscribe(
+      result => {
+        if(result.Data.ResponseData!=null){
+          this.source.next(result);
+        }
+         }
+  )
+ return (this.AsObservable()) ;
+
+ }
 
 
   public UpdateEntityAsync(UpdateEntityModel : UpdateEntityModel.UpdateDataModel):Observable<any> {
 
-    let entitydataRequest =  new AppRequest.EntityUpdateRequestMessage(UpdateEntityModel);
-    let  request = entitydataRequest.UpdateEntityRequest as  AppRequest.EntityUpdateRequest;
     let cacheMetadata = Array.of(this.SessionDataAgent.Getmetadata()) as Array<any>;
     if(cacheMetadata!=null){
      let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==UpdateEntityModel.EntityType && s.DefaultValue==DefaultTypes.Update) as MetaDataGridModel;
-     request.EntityFieldId =  "DC1C7755-7F79-4E9A-8D1C-04ADB961F181";
+     UpdateEntityModel.EntityFieldId =  "DC1C7755-7F79-4E9A-8D1C-04ADB961F181";
     }
+    this.UpdateEntityHandler.UpdateEntityData(UpdateEntityModel).subscribe(
+      result => {
+        if(result.Data.ResponseData!=null){
+          this.source.next(result);
+        }
+         }
+  )
+  return (this.AsObservable()) ;
 
-    this.UpdateEntityService.UpdateEntity(request).subscribe( result => {
-        this.source.next(result);
-        
-    },
-    error => { console.error(error); })
+   }
+
+    public CreateEntityAsync(CreateEntityModel : CreateEntityModel.CreateDataModel):Observable<any> {
+
+      let cacheMetadata = Array.of(this.SessionDataAgent.Getmetadata()) as Array<any>;
+      if(cacheMetadata!=null){
+       let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==CreateEntityModel.EntityType && s.DefaultValue==DefaultTypes.Update) as MetaDataGridModel;
+       CreateEntityModel.EntityFieldId =  "b27a68ad-7c21-4ddb-8a1d-8932459cf53b";
+      }
+    this.CreateEntityHandler.CreateEntityData(CreateEntityModel).subscribe(
+      result => {
+        if(result.Data.ResponseData!=null){
+          this.source.next(result);
+        }
+         }
+  )
+  return (this.AsObservable()) ;
+
+      }
+
+      public DeleteEntityAsync(DeleteEntityModel : DeleteEntityModel.DeleteDataModel):Observable<any> {
+
+        let cacheMetadata = Array.of(this.SessionDataAgent.Getmetadata()) as Array<any>;
+        if(cacheMetadata!=null){
+         let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==DeleteEntityModel.EntityType && s.DefaultValue==DefaultTypes.Update) as MetaDataGridModel;
+         DeleteEntityModel.EntityFieldId =  "DC1C7755-7F79-4E9A-8D1C-04ADB961F181";
+        }
+        this.DeleteEntityHandler.DeleteEntityData(DeleteEntityModel).subscribe(
+          result => {
+            if(result.Data.ResponseData!=null){
+              this.source.next(result);
+            }
+             }
+      )
+      return (this.AsObservable()) ;
     
-    return (this.AsObservable()) ;
-    }
-
-
-
+       }
 }

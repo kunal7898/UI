@@ -24,4 +24,16 @@ export class QueryEntityHandler extends BaseHandler{
             
             }
 
+
+            public LoadDataDynamic(QueryEntity :  QueryEntityModel.EntityDataModel):Observable<any>{
+                let QueryEntityrequest =  new AppRequest.EntityQueryRequestMessage(null,QueryEntity);
+                this.QueryEntityService.LoadData(QueryEntityrequest.QueryEntityRequest).subscribe( result => {
+                    this.source.next(result);
+                },
+                error => { console.error(error); })
+                
+                return (this.AsObservable()) ;
+                
+                }
+
 }

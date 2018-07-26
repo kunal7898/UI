@@ -31,6 +31,11 @@ import { UpdateEntityService } from './Services/UpdateEntityService';
 import { LogoComponentComponent } from './Header/logo-component/logo-component.component';
 import { HeaderComponent } from './Header/header/header.component';
 import { ProfileComponent } from './Header/profile/profile.component';
+import { CreateEntityService } from './Services/CreateEntityService';
+import { CreateEntityHandler } from './Helpers/CreateEntityHandler';
+import { UpdateEntityHandler } from './Helpers/UpdateEntityHandler';
+import { DeleteEntityHandler } from './Helpers/DeleteEntityHanlder';
+import { DeleteEntityService } from './Services/DeleteEntityService';
 
 
 
@@ -71,6 +76,11 @@ import { ProfileComponent } from './Header/profile/profile.component';
     MenuHandler,
     FormLayoutHandler,
     AuthPreventer,
+    CreateEntityHandler,
+    UpdateEntityHandler,
+    DeleteEntityHandler,
+    DeleteEntityService,
+    CreateEntityService,
     SessionDataAgent,
    { provide: HTTP_INTERCEPTORS, useClass: HTTPServiceInterceptor,multi: true },
   
