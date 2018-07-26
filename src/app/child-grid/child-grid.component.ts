@@ -11,8 +11,8 @@ import * as $ from 'jquery';
 export class ChildGridComponent implements OnInit {
 
   @Input() currentSelection: AppShared.CurrentChildGrid;
-  private Columns = [];
-  private Data: Array<any>;
+  public Columns = [];
+  public Data: Array<any>;
   constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler) { }
 
   ngOnInit() {

@@ -144,7 +144,7 @@ private EditEntityForm(EntityId : string){
   this.router.navigate(['/menu', 'entity', { id: perm }]);
 }
 
-private NewEntityForm(){
+public NewEntityForm(){
   if(this.EntityEditModel.IsAddAllowed){
     let perm = this.currentSelection.EntityType + '.' + this.currentSelection.ViewIndex + '.' + AppConstants.NULL_GUID;
     this.router.navigate(['/menu', 'entity', { id: perm }]);
