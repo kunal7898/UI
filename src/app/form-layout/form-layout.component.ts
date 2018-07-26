@@ -78,17 +78,19 @@ private LoadEntity():any{
    public OnSave() {
     this.LoadingMessage ="Saving Data...";
     this.loadingVisible = true;
-    this.UpdateEntity(this.FormData as JSON);
+    var n = this.FormData as JSON;
+    var c =  [n];
+    this.UpdateEntity(c);
   }
 
-  private PrepareUpdateRequest(Data:JSON):UpdateEntityModel.UpdateDataModel{
+  private PrepareUpdateRequest(Data:any):UpdateEntityModel.UpdateDataModel{
     let request = new  UpdateEntityModel.UpdateDataModel;
     request.EntityType = this.currentForm.EntityType;
     request.Data  = Data;
     return request;
   }
 
-  private UpdateEntity(Data:JSON):any{
+  private UpdateEntity(Data:any):any{
     let req = this.PrepareUpdateRequest(Data);
     this.UpdateDataSubscriber =  this.formhanlder.UpdateEntityAsync(req).subscribe(
       result => {

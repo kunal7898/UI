@@ -11,7 +11,7 @@ export namespace UpdateEntityModel{
    
     public EntityType : number;
     public EntityFieldId:string
-    public Data:JSON;
+    public Data:any;
 
  }
 

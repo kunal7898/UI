@@ -25,6 +25,14 @@ export class EntityDataGridComponent implements OnChanges  {
   columns =[];
   DatagridComponent : any;
   private MetadataModel:MetaDataModel.EntityMetaDataModel;
+  AddButton = {
+    text: 'Add',
+    type: 'success'
+  };
+  DeleteButton = {
+    text: 'Delete',
+    type: 'success'
+  };
   constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler,  public QueryEntityHanlder:QueryEntityHandler,public SessiondataAgent : SessionDataAgent,   private router: Router) { }
 
   ngOnChanges() {

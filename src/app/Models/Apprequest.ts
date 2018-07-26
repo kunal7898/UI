@@ -97,7 +97,7 @@ export namespace AppRequest{
      export class EntityUpdateRequest{
         public EntityType : number;
         public EntityFieldId:string
-        public Data:JSON;
+        public Data:any;
      }
 
 }

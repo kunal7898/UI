@@ -56,7 +56,7 @@
           <div class="title">Phone {{PhoneNumber}} </div>
           <div style="clear:both"></div>
           <div style="width:49%; float:left">
-              <button (click)="GoToMyAccount()">My Account</button>
+              <button >My Account</button>
           </div>
           <div style="width:49%; float:right">
               <button (click)="Logout()" >Logout</button>
@@ -65,3 +65,7 @@
       </div>
   </div>
 </div>
+
+<dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
+[shading]="true" [closeOnOutsideClick]="false" [(message)]="LoadingMessage">
+</dx-load-panel>

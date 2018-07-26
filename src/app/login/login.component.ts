@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
     viewresolver.LoadLoginMetaData().forEach(element => {
     Items.push({
       dataField:element["code"],
+      width:"330px",
       editorType:this.getEditorType(element["AttributeType"]),
       editorOptions:this.getEditorOptions(this.getEditorType(element["AttributeType"]),element["HideData"]),
       validationRules: FormValidator.getMandatoryFieldsValidation(element["code"],element["IsMandatory"]) ,
@@ -130,7 +131,7 @@ private LoadUserMenus(){
           return  {
             text:"Login",
             type :"success",
-            width:"380px",
+            width:"330px",
             onClick: function(event,value) {
               var button =  event.component;
               button.option('disabled', true);
