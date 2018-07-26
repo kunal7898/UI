@@ -1,0 +1,16 @@
+<dx-data-grid
+    id="childGridContainer"
+    [height]="200"
+    [showRowLines]="true"
+    [dataSource]="Data"
+    [columns]="Columns"
+    [columnAutoWidth]="true"
+    >
+    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+    <dxo-scrolling mode="virtual"></dxo-scrolling>
+    <dxo-sorting mode="none"></dxo-sorting>
+    <dxo-editing 
+            mode="cell"
+            [allowUpdating]="false">
+        </dxo-editing>
+ </dx-data-grid>

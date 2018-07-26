@@ -8,6 +8,9 @@ import { AppFilters } from '../AppCommon/Controls/App.QueryFilters';
 import { UpdateEntityModel } from '../Models/UpdateEntityModel';
 import { AlertService } from '../Services/AlertService';
 import { CreateEntityModel } from '../Models/CreateEntityModel';
+import { MetaDataModel } from '../Models/MetaDataModel';
+import { MetaDataGridModel } from '../Models/MetaDataGridModel';
+import { AppControl } from '../AppCommon/Controls/App.Controls';
 
 
 @Component({
@@ -21,7 +24,8 @@ export class FormLayoutComponent implements OnChanges {
   EntityDataSubscriber: Subscription;
   UpdateDataSubscriber:Subscription;
   CreateDataSubscriber:Subscription;
-  public Tabs: any;
+  EntityMetaDataSubscriber:Subscription;
+  public Tabs: AppControl.Tab[];
   LoadingMessage : string ;
   public SaveButton: any;
   public FormData: any = {};
@@ -41,16 +45,50 @@ private InitComponent(){
   this.LoadingMessage = "Loading Data..";
   this.loadingVisible = true;
   this.SetSaveButtonOptions();
-  if(this.currentForm.EntityId!=AppConstants.NULL_GUID){
-    this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType,false);
-    this.LoadEntity()
-  }else{
-    this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType,true);
-    this.loadingVisible= false;
-  }
+  this.LoadMetadata();
+ 
  
 
 }
+
+
+private LoadMetadata(){
+  let metadataModel =  new   MetaDataModel.EntityMetaDataModel;
+  metadataModel.EntityType = this.currentForm.EntityType;
+  this.EntityDataSubscriber =  this.formhanlder.MetdataEntityAsync(metadataModel).subscribe(
+    result => {
+      this.loadingVisible =  false;
+      if(this.currentForm.EntityId!=AppConstants.NULL_GUID){
+        this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType,false,result.EntityFields.ResponseData.Master);
+        if(result.EntityFields.ResponseData.Relations!=null){
+         // this.LoadTabs(result.EntityFields.ResponseData.Relations);
+        }
+        this.LoadEntity();
+      }else{
+        this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType,true,result.EntityFields.ResponseData.Master);
+        if(result.EntityFields.ResponseData.Relations!=null){
+          this.LoadTabs(result.EntityFields.ResponseData.Relations);
+         }
+        this.loadingVisible= false;
+      }
+       console.log(result);
+       }
+
+)
+}
+
+
+private LoadTabs(result:Array<MetaDataGridModel>){
+this.Tabs = []
+let tab  =  new AppControl.Tab();
+tab.Title =  "Relations";
+tab.Columns = result;
+tab.Data  =[{}];
+this.Tabs.push(tab);
+this.IsChildExist=true;
+}
+
+
 
 private PrepareRequest():QueryEntityModel.EntityDataModel{
   let queryPrms = new Array<AppFilters.FilterModel>();

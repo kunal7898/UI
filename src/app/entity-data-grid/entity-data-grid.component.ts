@@ -13,6 +13,8 @@ import { AppConstants } from '../AppCommon/App.Constant';
 import { DeleteEntityHandler } from '../Helpers/DeleteEntityHanlder';
 import { DeleteEntityModel } from '../Models/DeleteEntityModel';
 import { DefaultTypes } from '../AppCommon/App.Enums';
+import { UserNav } from '../Models/UserNavModel';
+import { AlertService } from '../Services/AlertService';
 
 @Component({
   selector: 'app-entity-data-grid',
@@ -28,27 +30,44 @@ export class EntityDataGridComponent implements OnChanges  {
   DataSource :Array<any>;
   columns =[];
   DatagridComponent : any;
+  EntityEditModel:UserNav;
   private MetadataModel:MetaDataModel.EntityMetaDataModel;
   AddButton = {
     text: 'Add',
-    type: 'success'
+    type: 'success',
   };
-  DeleteButton = {
-    text: 'Delete',
-    type: 'success'
-  };
-  constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler,  public QueryEntityHanlder:QueryEntityHandler,public SessiondataAgent : SessionDataAgent,   private router: Router,public DeleteEntityHanlder:DeleteEntityHandler) { }
+  
+  constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler,  public QueryEntityHanlder:QueryEntityHandler,public SessiondataAgent : SessionDataAgent,   private router: Router,public DeleteEntityHanlder:DeleteEntityHandler,public AlertService:AlertService) { }
 
   ngOnChanges() {
     this.LoadingMessage = "Loading Data..";
     this.loadingVisible = true;
     this.MetadataModel =  new MetaDataModel.EntityMetaDataModel();
     this.MetadataModel.EntityType =  this.currentSelection.EntityType;
+    this.LoadFormComponent();
     this.LoadDynamicColumnsAsync();
     this.LoadDynamicDataSourceAsync();
 
   }
  
+ private LoadFormComponent(){
+  let cacheMetadata = Array.of(this.SessiondataAgent.GetNav()) as Array<any>;
+  if(cacheMetadata!=null){
+   let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==this.MetadataModel.EntityType) as UserNav;
+  if(currentDatas!=null )
+  this.EntityEditModel =  currentDatas[0];
+  this.CreateButtonComponents(currentDatas[0]);
+  }
+}
+
+ private CreateButtonComponents(EditModel:UserNav){
+  
+  if(EditModel.IsAddAllowed){
+    
+  }
+  
+}
+
   private LoadDynamicColumnsAsync() {
    let result = this.CatalogEntityDataGridHandler.LoadColumnsDynamic(this.MetadataModel) as Array<MetaDataGridModel>;
    if(result!=null){
@@ -72,7 +91,7 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
   result.forEach((element,index) => {
     if(element.ShowControl){
       var component = this;
-      if (element.IsPrimaryEntity) {
+      if (element.IsPrimaryEntity ) {
         this.columns.push({
           dataField: element.Code,
           caption :element.Name,
@@ -80,7 +99,13 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
             $('<a/>').addClass('dx-link')
               .text(options.text)
               .click('dxclick', function () {
-                component.EditEntityForm(options.data.Id);
+                if(!component.EntityEditModel.IsEditAllowed){
+                  component.AlertService.InfoAlert("Edit on this Entity is not allowed","Role Alert");
+                }
+                else{
+                  component.EditEntityForm(options.data.Id);
+                }
+               
               }).appendTo(container);
           }
         })
@@ -120,8 +145,13 @@ private EditEntityForm(EntityId : string){
 }
 
 private NewEntityForm(){
-  let perm = this.currentSelection.EntityType + '.' + this.currentSelection.ViewIndex + '.' + AppConstants.NULL_GUID;
-  this.router.navigate(['/menu', 'entity', { id: perm }]);
+  if(this.EntityEditModel.IsAddAllowed){
+    let perm = this.currentSelection.EntityType + '.' + this.currentSelection.ViewIndex + '.' + AppConstants.NULL_GUID;
+    this.router.navigate(['/menu', 'entity', { id: perm }]);
+  }else{
+    this.AlertService.InfoAlert("Add on this Entity is not allowed","Role Alert");
+  }
+  
 } 
 
 public onContentReady(event){
@@ -130,29 +160,35 @@ public onContentReady(event){
 
 
 public onRowRemoving(event){
-  this.LoadingMessage = "Deleting Data..";
-  this.loadingVisible = true;
-  let DeleteModel =  new DeleteEntityModel.DeleteDataModel;
-  DeleteModel.EntityType =  this.MetadataModel.EntityType;
-  DeleteModel.Data = event.data;
-  let cacheMetadata = Array.of(this.SessiondataAgent.Getmetadata()) as Array<any>;
-  if(cacheMetadata!=null){
-   let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==this.MetadataModel.EntityType && s.DefaultValue==DefaultTypes.Delete) as MetaDataGridModel;
-   DeleteModel.EntityFieldId =  "85841292-de83-43f4-ac2d-9c3c67cf033a";
+  if(this.EntityEditModel.IsDeleteAllowed){
+    this.LoadingMessage = "Deleting Data..";
+    this.loadingVisible = true;
+    let DeleteModel =  new DeleteEntityModel.DeleteDataModel;
+    DeleteModel.EntityType =  this.MetadataModel.EntityType;
+    DeleteModel.Data = event.data;
+    let cacheMetadata = Array.of(this.SessiondataAgent.Getmetadata()) as Array<any>;
+    if(cacheMetadata!=null){
+     let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==this.MetadataModel.EntityType && s.DefaultValue==DefaultTypes.Delete) as MetaDataGridModel;
+     DeleteModel.EntityFieldId =  "85841292-de83-43f4-ac2d-9c3c67cf033a";
+    }
+    this.DeleteEntityHanlder.DeleteEntityData(DeleteModel).subscribe(
+      result => {
+        if(result.Data!=undefined && result.Data.ResponseData!=null){
+          this.DataSource = result.Data.ResponseData ;
+          this.loadingVisible = false;
+        }
+        else{
+          this.loadingVisible=false;
+        }
+     
+         }
+  
+  )
   }
-  this.DeleteEntityHanlder.DeleteEntityData(DeleteModel).subscribe(
-    result => {
-      if(result.Data!=undefined && result.Data.ResponseData!=null){
-        this.DataSource = result.Data.ResponseData ;
-        this.loadingVisible = false;
-      }
-      else{
-        this.loadingVisible=false;
-      }
-   
-       }
+  else{
+    this.AlertService.InfoAlert("Delete on this Entity is not allowed","Role Alert");
+  }
+  }
 
-)
-}
 
 }

@@ -21,6 +21,7 @@ import { UpdateEntityHandler } from "./UpdateEntityHandler";
 import { CreateEntityHandler } from "./CreateEntityHandler";
 import { DeleteEntityHandler } from "./DeleteEntityHanlder";
 import { DeleteEntityModel } from "../Models/DeleteEntityModel";
+import { EntityMetaDataHandler } from "./EntityMetaDataHandler";
 
 @Injectable()
 export class FormLayoutHandler extends BaseHandler{
@@ -28,12 +29,12 @@ export class FormLayoutHandler extends BaseHandler{
 DataSourceSubscriber: Subscription;
 DataSource :DataSource;
 datasourceinstance:any;
-constructor(public SessionDataAgent:SessionDataAgent,public QueryEntityHandler :QueryEntityHandler, protected http: HttpClient,public UpdateEntityHandler:UpdateEntityHandler,public CreateEntityHandler:CreateEntityHandler,public DeleteEntityHandler:DeleteEntityHandler){
+constructor(public SessionDataAgent:SessionDataAgent,public QueryEntityHandler :QueryEntityHandler, protected http: HttpClient,public UpdateEntityHandler:UpdateEntityHandler,public CreateEntityHandler:CreateEntityHandler,public DeleteEntityHandler:DeleteEntityHandler,public MetadataHandler:EntityMetaDataHandler){
 super();
 }
 
-public LoadFormLayout(EntityType:number,Isnew:boolean){
-let metadatafromcache =  this.LoadMetadataFromCache(EntityType);
+public LoadFormLayout(EntityType:number,Isnew:boolean,Metadata: Array<MetaDataGridModel>){
+let metadatafromcache =  Metadata;
 if(metadatafromcache!=null){
   let headerItems =  this.LoadHeaderItems();
 return this.LoadInnerItems(headerItems,metadatafromcache,Isnew);
@@ -275,4 +276,19 @@ public LoadEntityAsync(QueryEntityModel :  QueryEntityModel.EntityDataModel):Obs
       return (this.AsObservable()) ;
     
        }
+
+       public MetdataEntityAsync(EntityMetadataModel : MetaDataModel.EntityMetaDataModel):Observable<any> {
+
+        this.MetadataHandler.EntityMetadata(EntityMetadataModel).subscribe(
+          result => {
+            if(result.EntityFields.ResponseData!=null){
+              this.source.next(result);
+            }
+             }
+      )
+      return (this.AsObservable()) ;
+    
+       }
+
+
 }

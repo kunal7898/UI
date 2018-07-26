@@ -22,4 +22,23 @@ export class CataLogEntityDataGridService{
            }
           return null;
           }
+
+}
+
+@Injectable()
+export class ChildEntityDataGridService{
+
+    constructor(public SessionDataAgent:SessionDataAgent){
+
+    }
+    public LoadColumns(MetadataAttribute: AppRequest.MetadataRequest):Array<MetaDataGridModel>{
+          
+           let cacheMetadata = Array.of(this.SessionDataAgent.Getmetadata()) as Array<any>;
+           if(cacheMetadata!=null){
+            let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==MetadataAttribute.EntityType) as Array<MetaDataGridModel>;
+            return currentDatas;
+           }
+          return null;
+          }
+          
 }

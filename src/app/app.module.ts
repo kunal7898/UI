@@ -36,6 +36,9 @@ import { CreateEntityHandler } from './Helpers/CreateEntityHandler';
 import { UpdateEntityHandler } from './Helpers/UpdateEntityHandler';
 import { DeleteEntityHandler } from './Helpers/DeleteEntityHanlder';
 import { DeleteEntityService } from './Services/DeleteEntityService';
+import { EntityMetaDataService } from './Services/EntityMetaDataService';
+import { EntityMetaDataHandler } from './Helpers/EntityMetaDataHandler';
+import { ChildGridComponent } from './child-grid/child-grid.component';
 
 
 
@@ -52,7 +55,8 @@ import { DeleteEntityService } from './Services/DeleteEntityService';
     FormLayoutComponent,
     LogoComponentComponent,
     HeaderComponent,
-    ProfileComponent
+    ProfileComponent,
+    ChildGridComponent
   ],
   imports: [
     BrowserModule,
@@ -81,6 +85,8 @@ import { DeleteEntityService } from './Services/DeleteEntityService';
     DeleteEntityHandler,
     DeleteEntityService,
     CreateEntityService,
+    EntityMetaDataService,
+    EntityMetaDataHandler,
     SessionDataAgent,
    { provide: HTTP_INTERCEPTORS, useClass: HTTPServiceInterceptor,multi: true },
   

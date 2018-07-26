@@ -27,13 +27,20 @@
     </div>
     <div *dxTemplate="let Tab of 'item'">
     <div>
-        <!-- <app-childgrid [currentSelection]="Tab"></app-childgrid> -->
+        <app-child-grid [currentSelection]="Tab"> </app-child-grid>
     </div>
     </div>
     </dx-tab-panel>
   </div>
   
- 
+  <div  *ngIf="IsChildExist">
+    <hr>
+    <dx-button style="float:right " [text]="SaveButton.text" [type]="SaveButton.type" (onClick)="OnSave()"></dx-button>
+    <br>
+    <br>
+    <br>
+    <br>
+  </div>
   <dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
   [shading]="true" [closeOnOutsideClick]="false" [(message)]="LoadingMessage">
 </dx-load-panel>

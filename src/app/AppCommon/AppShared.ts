@@ -15,4 +15,10 @@ export namespace AppShared{
             this.EntityId = entityId;
         }
     }
+
+    export class CurrentChildGrid
+    {
+        Columns:any;
+        Data:Array<any>;
+    }
 }
