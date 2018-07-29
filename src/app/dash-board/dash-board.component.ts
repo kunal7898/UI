@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation, OnChanges } from '@angular/core';
-import { ActivatedRoute } from '../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-dash-board',
@@ -9,7 +8,6 @@ import { ActivatedRoute } from '../../../node_modules/@angular/router';
 })
 export class DashBoardComponent implements OnInit,OnChanges  {
  
-  public showDashBoard;
   public sub : any; 
   Data : [{
     country: "China",
@@ -45,25 +43,13 @@ export class DashBoardComponent implements OnInit,OnChanges  {
   populationData:any;
     types: string[] = ["area", "stackedarea", "fullstackedarea"];
 
-    constructor(private route: ActivatedRoute) {
+    constructor() {
         
     }
     
   ngOnInit() {
    this.populationData =  this.Data;
-   this.showDashBoard =  false;
-   this.sub = this.route.params.subscribe(params => {
-    // (+) converts string 'id' to a number
-    let param = params['Token'];
-     if(param!=null){
-        var queryParams: string[] = params['Token'].split(".") ;
-        if (queryParams.length > 1) {
-          this.showDashBoard = false;
-        }
-     }
-     
-
-  });
+   
    }
 
    ngOnChanges() {

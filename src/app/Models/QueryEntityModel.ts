@@ -23,6 +23,7 @@ export namespace QueryEntityModel{
   public EntityType : number;
   public Filters:Array<AppFilters.FilterModel>;
   public IsCatalogView :boolean;
+  public LoadAllRelations : boolean;
 }
 
 

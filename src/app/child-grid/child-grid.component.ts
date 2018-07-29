@@ -3,6 +3,7 @@ import { AppShared } from '../AppCommon/AppShared';
 import { CatalogEntityDataGridHandler } from '../Helpers/EntityDataGridHandler';
 import { MetaDataGridModel } from '../Models/MetaDataGridModel';
 import * as $ from 'jquery';
+import { FreezeType } from '../AppCommon/App.Enums';
 @Component({
   selector: 'app-child-grid',
   templateUrl: './child-grid.component.html',
@@ -62,6 +63,8 @@ export class ChildGridComponent implements OnInit {
           this.Columns.push({
             dataField: element.Code,
             caption :element.Name,
+            allowEditing:element.Readonly || (element.FreezeType == FreezeType.Edit && this.currentSelection.Metadata.IsEdit)?false:true,
+
           })
         }
       }

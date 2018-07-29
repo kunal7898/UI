@@ -15,4 +15,6 @@ export class MetaDataGridModel{
     public LookupEntityType :number; 
     public DisplayMember : string;
     public ValueMember :string;
+    public FreezeType :number;
+    public DefaultValue:string;
 }

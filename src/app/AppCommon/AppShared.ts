@@ -1,3 +1,7 @@
+import { AppControl } from "./Controls/App.Controls";
+import { MetaDataModel } from "../Models/MetaDataModel";
+import { MetaDataGridModel } from "../Models/MetaDataGridModel";
+
 export namespace AppShared{
 
     export class CurrentSelection{
@@ -20,5 +24,11 @@ export namespace AppShared{
     {
         Columns:any;
         Data:Array<any>;
+        Metadata:AppControl.FormMetadata;
+    }
+
+    export class RelationData{
+        public RelationName:string;
+        public Data : Array<MetaDataGridModel>;
     }
 }

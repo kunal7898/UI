@@ -35,12 +35,18 @@ super();
 
 public LoadFormLayout(EntityType:number,Isnew:boolean,Metadata: Array<MetaDataGridModel>){
 let metadatafromcache =  Metadata;
+this.StoreFormActions(EntityType,Metadata);
 if(metadatafromcache!=null){
   let headerItems =  this.LoadHeaderItems();
 return this.LoadInnerItems(headerItems,metadatafromcache,Isnew);
 
 }
 return null;
+}
+
+private StoreFormActions(EntityType:number, Metadata:Array<MetaDataGridModel>){
+ let actions = Metadata.filter(s=>(parseInt(s.DefaultValue)== DefaultTypes.Update || parseInt(s.DefaultValue)== DefaultTypes.Add || parseInt(s.DefaultValue)== DefaultTypes.Delete  ));
+ this.SessionDataAgent.SetFormActions(actions);
 }
 
 
@@ -225,10 +231,12 @@ public LoadEntityAsync(QueryEntityModel :  QueryEntityModel.EntityDataModel):Obs
 
   public UpdateEntityAsync(UpdateEntityModel : UpdateEntityModel.UpdateDataModel):Observable<any> {
 
-    let cacheMetadata = Array.of(this.SessionDataAgent.Getmetadata()) as Array<any>;
+    let cacheMetadata = Array.of(this.SessionDataAgent.GetFormActions()) as Array<any>;
     if(cacheMetadata!=null){
-     let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==UpdateEntityModel.EntityType && s.DefaultValue==DefaultTypes.Update) as MetaDataGridModel;
-     UpdateEntityModel.EntityFieldId =  "DC1C7755-7F79-4E9A-8D1C-04ADB961F181";
+     let currentDatas =  cacheMetadata[0].filter(s=>s.DefaultValue==DefaultTypes.Update) as MetaDataGridModel;
+     if(currentDatas[0]!=null){
+     UpdateEntityModel.EntityFieldId = currentDatas[0].Id;
+     }
     }
     this.UpdateEntityHandler.UpdateEntityData(UpdateEntityModel).subscribe(
       result => {
@@ -243,10 +251,12 @@ public LoadEntityAsync(QueryEntityModel :  QueryEntityModel.EntityDataModel):Obs
 
     public CreateEntityAsync(CreateEntityModel : CreateEntityModel.CreateDataModel):Observable<any> {
 
-      let cacheMetadata = Array.of(this.SessionDataAgent.Getmetadata()) as Array<any>;
+      let cacheMetadata = Array.of(this.SessionDataAgent.GetFormActions()) as Array<any>;
       if(cacheMetadata!=null){
-       let currentDatas =  cacheMetadata[0].filter(s=>s.EntityType==CreateEntityModel.EntityType && s.DefaultValue==DefaultTypes.Update) as MetaDataGridModel;
-       CreateEntityModel.EntityFieldId =  "b27a68ad-7c21-4ddb-8a1d-8932459cf53b";
+       let currentDatas =  cacheMetadata[0].filter(s=> s.DefaultValue==DefaultTypes.Add) as MetaDataGridModel;
+       if(currentDatas[0]!=null){
+        CreateEntityModel.EntityFieldId = currentDatas[0].Id;
+       }
       }
     this.CreateEntityHandler.CreateEntityData(CreateEntityModel).subscribe(
       result => {

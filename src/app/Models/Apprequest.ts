@@ -49,7 +49,8 @@ export namespace AppRequest{
             if(queryEntityDataRequest!=null){
                 this.QueryEntityRequest =  new AppRequest.EntityQueryRequest();
                 this.QueryEntityRequest.EntityType =  queryEntityDataRequest.EntityType;
-                this.QueryEntityRequest.IsCatalogView = queryEntityDataRequest.IsCatalogView;
+                this.QueryEntityRequest.Filters = queryEntityDataRequest.Filters;
+                this.QueryEntityRequest.LoadAllRelations = queryEntityDataRequest.LoadAllRelations;
             }
            
 
@@ -126,6 +127,7 @@ export namespace AppRequest{
         public EntityType : number;
         public Filters:Array<AppFilters.FilterModel>
         public IsCatalogView:boolean;
+        public LoadAllRelations:boolean;
      }
 
      export class EntityUpdateRequest{

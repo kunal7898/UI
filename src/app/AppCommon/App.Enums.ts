@@ -2,7 +2,8 @@ export enum AppEnums{
    AccessToken = "access_token",
    UserNav = "UserViews",
    Metadata = "Metadata",
-   UserSettings="Settings"
+   UserSettings="Settings",
+   FormActions="FormActions",
    
 }
 
@@ -22,6 +23,16 @@ export enum AttributeType{
 }
 
 export enum DefaultTypes{
+    Add = 1,
+    Update =2,
+    Delete =3,
+}
+
+export enum FreezeType{
+    Edit =1,
+}
+
+export enum FormactionTypes{
     Add = 1,
     Update =2,
     Delete =3,

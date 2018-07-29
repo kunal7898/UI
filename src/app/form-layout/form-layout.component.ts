@@ -11,6 +11,7 @@ import { CreateEntityModel } from '../Models/CreateEntityModel';
 import { MetaDataModel } from '../Models/MetaDataModel';
 import { MetaDataGridModel } from '../Models/MetaDataGridModel';
 import { AppControl } from '../AppCommon/Controls/App.Controls';
+import { SessionDataAgent } from '../SessionDataAgent/SessionDataAgent';
 
 
 @Component({
@@ -26,13 +27,14 @@ export class FormLayoutComponent implements OnChanges {
   CreateDataSubscriber:Subscription;
   EntityMetaDataSubscriber:Subscription;
   public Tabs: AppControl.Tab[];
+  private RelationKeys :AppShared.RelationData[];
   LoadingMessage : string ;
   public SaveButton: any;
   public FormData: any = {};
   public FormLayout:any;
   public IsChildExist: boolean = false;
   public loadingVisible: boolean = false;
-  constructor(public formhanlder : FormLayoutHandler,public AlertService:AlertService) { }
+  constructor(public formhanlder : FormLayoutHandler,public AlertService:AlertService,public SessionDataAgent:SessionDataAgent) { }
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -42,14 +44,18 @@ export class FormLayoutComponent implements OnChanges {
   }
 
 private InitComponent(){
+  this.ClearLocalstr();
   this.LoadingMessage = "Loading Data..";
   this.loadingVisible = true;
   this.SetSaveButtonOptions();
   this.LoadMetadata();
- 
- 
-
 }
+
+
+private ClearLocalstr(){
+  this.SessionDataAgent.ClearLocalSt();
+}
+
 
 
 private LoadMetadata(){
@@ -60,15 +66,31 @@ private LoadMetadata(){
       this.loadingVisible =  false;
       if(this.currentForm.EntityId!=AppConstants.NULL_GUID){
         this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType,false,result.EntityFields.ResponseData.Master);
-        if(result.EntityFields.ResponseData.Relations!=null){
-         // this.LoadTabs(result.EntityFields.ResponseData.Relations);
-        }
-        this.LoadEntity();
+         var component = this;
+         if(result.EntityFields.ResponseData.Relations!=null){
+          Object.keys(result.EntityFields.ResponseData.Relations).forEach(function(k) {
+            if(k!=null && k.length>0){
+             component.RelationKeys =  new Array<AppShared.RelationData>();
+             component.RelationKeys.push({Data:result.EntityFields.ResponseData.Relations[k] as Array<MetaDataGridModel>,RelationName:k})
+            }
+         });
+         }
+        
+       this.LoadEntityData(result.EntityFields.ResponseData);
       }else{
         this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType,true,result.EntityFields.ResponseData.Master);
+        var component = this;
         if(result.EntityFields.ResponseData.Relations!=null){
-          this.LoadTabs(result.EntityFields.ResponseData.Relations);
+          Object.keys(result.EntityFields.ResponseData.Relations).forEach(function(k) {
+            if(k!=null && k.length>0){
+             component.RelationKeys =  new Array<AppShared.RelationData>();
+             component.RelationKeys.push({Data:result.EntityFields.ResponseData.Relations[k] as Array<MetaDataGridModel>,RelationName:k})
+            }
+         });
          }
+       if(this.RelationKeys!=null && this.RelationKeys.length>0){
+         this.LoadTabs(this.RelationKeys);
+       }
         this.loadingVisible= false;
       }
        console.log(result);
@@ -78,13 +100,25 @@ private LoadMetadata(){
 }
 
 
-private LoadTabs(result:Array<MetaDataGridModel>){
-this.Tabs = []
-let tab  =  new AppControl.Tab();
-tab.Title =  "Relations";
-tab.Columns = result;
-tab.Data  =[{}];
-this.Tabs.push(tab);
+private LoadTabs(RelationKeys:Array<AppShared.RelationData>,Data?:any){
+this.Tabs = [];
+
+let Metadata =  new AppControl.FormMetadata();
+if(this.currentForm.EntityId!=AppConstants.NULL_GUID){
+  Metadata.IsEdit = true;
+  Metadata.IsNew=false;
+  RelationKeys.forEach(ele=>{
+    this.Tabs.push({Data:Data,Columns:ele.Data,Title:ele.RelationName,Metadata:Metadata,Icon:null,Id:null});
+
+});
+}else{
+  Metadata.IsEdit = false;
+  Metadata.IsNew=true;
+  RelationKeys.forEach(ele=>{
+       this.Tabs.push({Data:[{}],Columns:ele.Data,Title:ele.RelationName,Metadata:Metadata,Icon:null,Id:null});
+  
+  });
+}
 this.IsChildExist=true;
 }
 
@@ -96,16 +130,21 @@ private PrepareRequest():QueryEntityModel.EntityDataModel{
   let request = new  QueryEntityModel.EntityDataModel;
   request.EntityType = this.currentForm.EntityType;
   request.Filters = queryPrms;
+  request.LoadAllRelations = true;
   return request;
 }
 
-private LoadEntity():any{
+private LoadEntityData(Datas:Array<MetaDataGridModel>):any{
   let req = this.PrepareRequest();
   this.EntityDataSubscriber =  this.formhanlder.LoadEntityAsync(req).subscribe(
     result => {
       this.loadingVisible =  false;
-      this.FormData = result.Data.ResponseData[0];
-       console.log(result);
+      if(result.Data.ResponseData!=null){
+        this.FormData = result.Data.ResponseData.Master;
+      }
+      if(this.RelationKeys!=undefined && this.RelationKeys.length>0 && result.Data.ResponseData.Relations.length>0){
+        this.LoadTabs(this.RelationKeys,result.Data.ResponseData.Relations);
+      }
        }
 
 )
@@ -170,7 +209,7 @@ private LoadEntity():any{
     this.CreateDataSubscriber =  this.formhanlder.CreateEntityAsync(req).subscribe(
       result => {
         this.loadingVisible =  false;
-        if(result.IsUpdateSucessfull)
+        if(result.IsCreateSucessfull)
         {
           this.AlertService.InfoAlert(result.ResponseMessage,"Entity Create");
         }

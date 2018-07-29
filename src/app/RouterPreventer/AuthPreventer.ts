@@ -10,14 +10,21 @@ export class AuthPreventer implements CanActivate {
 
   };
   canActivate() {
-
-    console.log("AuthRouterGard");
     if (this.sessionAgent.GetAccessToken()!=null) {
+      this.ClearLocalstr();
       return true;
     } else {
-     // window.alert("You don't have permission to view this page");
+      this.ClearSessionStr();
       this.router.navigate(['/login'])
       return false;
     }
+  }
+
+  private ClearLocalstr(){
+    this.sessionAgent.ClearLocalSt();
+  }
+
+  private ClearSessionStr(){
+    this.sessionAgent.ClearStorage();
   }
 }

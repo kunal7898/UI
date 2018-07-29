@@ -2,6 +2,8 @@ import { SessionStorageService,LocalStorageService } from 'ngx-webstorage';
 import { Injectable } from '@angular/core';
 import { AppEnums } from '../AppCommon/App.Enums';
 import { UserDataModel } from '../Models/UserModel';
+import { MetaDataGridModel } from '../Models/MetaDataGridModel';
+import { MetaDataModel } from '../Models/MetaDataModel';
 
 
 @Injectable()
@@ -64,4 +66,16 @@ public GetNav():JSON{
     public GetuserSettings():UserDataModel.UserModel{
         return  this.sessionSt.retrieve(AppEnums.UserSettings) as UserDataModel.UserModel;
       }
+      
+    public SetFormActions(Data : Array<MetaDataGridModel>){
+        this.localSt.store(AppEnums.FormActions,Data);
+    }  
+
+    public GetFormActions():Array<MetaDataGridModel>{
+       return  this.localSt.retrieve(AppEnums.FormActions)
+    }
+
+    public ClearLocalSt(){
+        this.localSt.clear();
+    }
 }

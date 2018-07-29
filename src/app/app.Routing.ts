@@ -6,7 +6,7 @@ import { AuthPreventer } from "./RouterPreventer/AuthPreventer";
 import {PagenotFoundComponent} from "./pagenot-found/pagenot-found.component"
 import { CatalogEntityComponent } from "./catalog-entity/catalog-entity.component";
 import {EntityFormComponent} from './entity-form/entity-form.component'
-
+import { DashBoardComponent } from './dash-board/dash-board.component';
 export const routes : Routes=[
 
     {
@@ -23,6 +23,8 @@ export const routes : Routes=[
         component: MenuComponentComponent,
         canActivate: [AuthPreventer], 
         children: [
+            { path: '', redirectTo: 'DashBoard', pathMatch: 'full' },
+            { path: 'DashBoard', component: DashBoardComponent },
             { path: 'CatalogEntity', component: CatalogEntityComponent },
             { path: 'entity', component: EntityFormComponent },
              

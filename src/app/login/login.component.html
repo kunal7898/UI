@@ -1,4 +1,4 @@
-<div id="body">
+<!-- <div id="body">
   <form id="box" class="box" (submit)="DoLogIn($event)">
     <dx-form id="formdata"
       width="330px"
@@ -14,4 +14,46 @@
     
 </div>
 
+ -->
+ <div class="materialContainer">
 
+
+  <div class="box">
+
+     <div class="title">LOGIN</div>
+
+    <div id="body">
+  <form id="box" class="box" (submit)="DoLogIn($event)">
+    <dx-form id="formdata"
+      width="330px"
+     [(formData)]="formData" 
+    [(items)]="items"
+    validationGroup="dxvalidationGroup"
+    ></dx-form>
+    <dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
+      [shading]="true" [closeOnOutsideClick]="false" [(message)]="LoadingMessage">
+    </dx-load-panel>
+    
+    </form>
+    
+</div> 
+
+
+    
+     <a href="" class="pass-forgot">Forgot your password?</a>
+
+  </div>
+
+  <div class="overbox">
+     <div class="material-button alt-2"><span class="shape"></span></div>
+
+     <div class="title">REGISTER</div>
+
+    
+
+  
+
+
+  </div>
+
+</div>

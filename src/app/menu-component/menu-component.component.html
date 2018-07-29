@@ -1,7 +1,7 @@
 
     <app-header></app-header>
 
-<div class="slideout-container" id="slideOutView">
+<div class="slideout-container mdl-color--blue-grey-900 mdl-color-text--blue-grey-50" id="slideOutView">
   <dx-slide-out-view
       #slideout
       [(menuVisible)]="menuVisible"
@@ -13,14 +13,14 @@
               </dx-toolbar>
               <!-- <div class="rightTitle">Name: <b>{{viewName}}</b></div> -->
               <div class="rightbox">
-                  <app-dash-board></app-dash-board>
                   <router-outlet></router-outlet>
               </div>
           </div>
-  <div *dxTemplate="let menuData of 'menu'" style="height: 100%;">
+  <div class="demo-navigation mdl-navigation mdl-color--blue-grey-800" *dxTemplate="let menuData of 'menu'" style="height: 100%;">
 
       <dx-tree-view
       #treeview
+      class="mdl-color-text--blue-grey-400 material-icons"
       [dataSource]="menus"
       [(width)]="width"
       [searchEnabled]="true"
