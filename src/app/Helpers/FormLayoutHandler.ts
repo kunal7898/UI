@@ -117,8 +117,14 @@ private getEditorType(Attributetype): any {
           disabled: false,
           readOnly: false,
           tabIndex: 1,
-          onValueChanged: function (e) {
-
+          value:false,
+          onOptionChanged: function (e,value) {
+             if(e.value==1){
+               e.value=true;
+             }
+             if(e.value==0){
+              e.value=false;
+            }
           }
         }
       }
@@ -132,7 +138,7 @@ private getEditorType(Attributetype): any {
         return {
             dataSource: component.LoadDataSourceInternal(metadataModel.PicklistMasterId,metadataModel.LookupEntityType),
             displayExpr: metadataModel.DisplayMember,
-            valueExpr: "Email",
+            valueExpr: metadataModel.ValueMember,
             searchEnabled: true,
             onInitialized: function (e) {
               //window.alert("event fired");
@@ -164,7 +170,7 @@ private LoadDataSourceInternal(picklistmasterid?:string,lookupentitytype?:number
             let requestPoint =AppSettings.BASE_URL+ AppSettings.QUERYENTITY_API;
             let response ;
             let  request = new  AppRequest.EntityQueryRequest;
-            request.EntityType =  106;
+            request.EntityType =  lookupentitytype;
             return  component.http.post(requestPoint,request)
             .toPromise()
             .then(response => {
