@@ -4,6 +4,7 @@ export enum AppEnums{
    Metadata = "Metadata",
    UserSettings="Settings",
    FormActions="FormActions",
+   RelatedSchema="RelatedSchema",
    
 }
 
@@ -19,7 +20,8 @@ export enum AttributeType{
     Lookup =3,
     Date = 4,
     Textarea =5,
-    Radiobox=6
+    Radiobox=6,
+    Number=7,
 }
 
 export enum DefaultTypes{
@@ -36,4 +38,14 @@ export enum FormactionTypes{
     Add = 1,
     Update =2,
     Delete =3,
+}
+export enum GridDataType{
+    String ="1",
+    Checkbox = "2",
+    lookup="3",
+    Date = "4",
+    Textarea ="5",
+    Radiobox="6",
+    Number="7",
+
 }

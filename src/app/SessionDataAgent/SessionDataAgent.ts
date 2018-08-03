@@ -78,4 +78,12 @@ public GetNav():JSON{
     public ClearLocalSt(){
         this.localSt.clear();
     }
+
+    public SetRelatedDataSchema(value:any){
+        this.localSt.store(AppEnums.RelatedSchema,value);
+    }
+
+    public GetRelatedSchema():any{
+       return this.localSt.retrieve(AppEnums.RelatedSchema);
+    }
 }

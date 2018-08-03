@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AppShared } from '../AppCommon/AppShared';
-import { CatalogEntityDataGridHandler } from '../Helpers/EntityDataGridHandler';
 import { MetaDataGridModel } from '../Models/MetaDataGridModel';
 import * as $ from 'jquery';
-import { FreezeType } from '../AppCommon/App.Enums';
+import { FreezeType, GridDataType } from '../AppCommon/App.Enums';
+import { ChildEntityDataGridHandler } from '../Helpers/ChildEntityDataGridHandler';
 @Component({
   selector: 'app-child-grid',
   templateUrl: './child-grid.component.html',
@@ -14,7 +14,7 @@ export class ChildGridComponent implements OnInit {
   @Input() currentSelection: AppShared.CurrentChildGrid;
   public Columns = [];
   public Data: Array<any>;
-  constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler) { }
+  constructor(public ChildEntityDataGridHandler:ChildEntityDataGridHandler) { }
 
   ngOnInit() {
   }
@@ -63,6 +63,7 @@ export class ChildGridComponent implements OnInit {
           this.Columns.push({
             dataField: element.Code,
             caption :element.Name,
+            dataType:component.ChildEntityDataGridHandler.ParseDataType(element.AttributeType  as GridDataType),
             allowEditing:element.Readonly || (element.FreezeType == FreezeType.Edit && this.currentSelection.Metadata.IsEdit)?false:true,
 
           })

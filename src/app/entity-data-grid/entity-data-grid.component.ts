@@ -118,7 +118,10 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
       }
     }
 })
-   
+  if(this.columns.length==0){
+   this.loadingVisible=false;
+   this.AlertService.FailAlert("Error while Loading Metadata","MetaData Error");
+  } 
 }
 
 private LoadDynamicDataSourceAsync() {

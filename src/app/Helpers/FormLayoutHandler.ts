@@ -246,9 +246,7 @@ public LoadEntityAsync(QueryEntityModel :  QueryEntityModel.EntityDataModel):Obs
     }
     this.UpdateEntityHandler.UpdateEntityData(UpdateEntityModel).subscribe(
       result => {
-        if(result.Data.ResponseData!=null){
           this.source.next(result);
-        }
          }
   )
   return (this.AsObservable()) ;
@@ -266,9 +264,7 @@ public LoadEntityAsync(QueryEntityModel :  QueryEntityModel.EntityDataModel):Obs
       }
     this.CreateEntityHandler.CreateEntityData(CreateEntityModel).subscribe(
       result => {
-        if(result.Data.ResponseData!=null){
           this.source.next(result);
-        }
          }
   )
   return (this.AsObservable()) ;

@@ -34,6 +34,9 @@ export class FormLayoutComponent implements OnChanges {
   public FormLayout:any;
   public IsChildExist: boolean = false;
   public loadingVisible: boolean = false;
+  private TabsData:{};
+  private CachData:any;
+  private RelatedData:Array<any>;
   constructor(public formhanlder : FormLayoutHandler,public AlertService:AlertService,public SessionDataAgent:SessionDataAgent) { }
 
 
@@ -64,6 +67,11 @@ private LoadMetadata(){
   this.EntityDataSubscriber =  this.formhanlder.MetdataEntityAsync(metadataModel).subscribe(
     result => {
       this.loadingVisible =  false;
+
+      if(result.EntityFields.ResponseData.RelatedMetadata!=null){
+        this.SessionDataAgent.SetRelatedDataSchema(result.EntityFields.ResponseData.RelatedMetadata);
+      }
+
       if(this.currentForm.EntityId!=AppConstants.NULL_GUID){
         this.FormLayout = this.formhanlder.LoadFormLayout(this.currentForm.EntityType,false,result.EntityFields.ResponseData.Master);
          var component = this;
@@ -163,6 +171,9 @@ private LoadEntityData(Datas:Array<MetaDataGridModel>):any{
     this.loadingVisible = true;
     var n = this.FormData as JSON;
     var c =  [n];
+    if(this.Tabs!=undefined && this.Tabs.length>0){
+      this.LoadTabsData();
+    }
     if(this.currentForm.EntityId!=AppConstants.NULL_GUID){
       this.UpdateEntity(c);
     }
@@ -170,6 +181,32 @@ private LoadEntityData(Datas:Array<MetaDataGridModel>):any{
       this.CreateEntity(c);
     }
     
+  }
+
+  private LoadTabsData(){
+     this.TabsData={};
+     this.Tabs.forEach(eachtab=>{
+       this.TabsData[eachtab.Title] = eachtab.Data;
+      });
+     let relateddatas = this.FormatRelatedRequest();
+     if(relateddatas.length>0){
+       this.FormData.RelatedData = relateddatas;
+     }
+  }
+
+  private FormatRelatedRequest():Array<any>{
+    this.CachData =  this.SessionDataAgent.GetRelatedSchema();
+    this.RelatedData = [];
+    var component = this;
+    Object.keys(this.CachData).forEach(function(k) {
+       if(k!=null && k.length>0){
+         if(component.TabsData[k].length>0){
+          component.TabsData[k][0].EntityType=component.CachData[k];
+            component.RelatedData.push(component.TabsData[k][0]);
+         }
+      }
+   });
+    return this.RelatedData;
   }
 
   private PrepareUpdateRequest(Data:any):UpdateEntityModel.UpdateDataModel{

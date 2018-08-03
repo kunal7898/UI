@@ -39,6 +39,7 @@ import { DeleteEntityService } from './Services/DeleteEntityService';
 import { EntityMetaDataService } from './Services/EntityMetaDataService';
 import { EntityMetaDataHandler } from './Helpers/EntityMetaDataHandler';
 import { ChildGridComponent } from './child-grid/child-grid.component';
+import { ChildEntityDataGridHandler } from './Helpers/ChildEntityDataGridHandler';
 
 
 
@@ -87,6 +88,7 @@ import { ChildGridComponent } from './child-grid/child-grid.component';
     CreateEntityService,
     EntityMetaDataService,
     EntityMetaDataHandler,
+    ChildEntityDataGridHandler,
     SessionDataAgent,
    { provide: HTTP_INTERCEPTORS, useClass: HTTPServiceInterceptor,multi: true },
   
