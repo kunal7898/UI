@@ -13,7 +13,7 @@ constructor(public SessionDataAgent:SessionDataAgent){
 
 public LoadMenuItems():Array<TreeView>{
     this.LoadUserDashBoard();
-    this.LoadUserSettings();
+    //this.LoadUserSettings();
 return this.GetMenus();
 }
 
@@ -33,8 +33,9 @@ this.DashBoard.forEach(element => {
 })
     menu.forEach(element => {
         let val  = new  TreeView;
-        val.ID = element["ViewId"];
+        val.ID = element["Group1"]==0?element["ID"]:element["ViewId"];
         val.text= element["ViewName"];
+        val.ParentID =  element["Group1"]==0?null:element["Group1"]
         val.EntityType= element["EntityType"];
         menus.push(val);
     });
@@ -56,7 +57,7 @@ private LoadUserDashBoard(){
     return this.DashBoard = [
         {
     
-            ID: "2",
+            ID: "200",
             text: "Home/DashBoard",
             expanded: false
         }

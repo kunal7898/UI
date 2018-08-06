@@ -6,6 +6,7 @@ import { Observable } from "../../../node_modules/rxjs/Observable";
 import { AppRequest } from "../Models/Apprequest";
 import { MetaDataModel } from "../Models/MetaDataModel";
 import { MetaDataGridModel } from "../Models/MetaDataGridModel";
+import { GridDataType } from "../AppCommon/App.Enums";
 
 @Injectable()
 export class CatalogEntityDataGridHandler  extends BaseHandler{
@@ -21,6 +22,21 @@ export class CatalogEntityDataGridHandler  extends BaseHandler{
             return response;
             
             }
+
+
+            public ParseDataType(Type:GridDataType){
+                switch(Type){
+                    case GridDataType.Checkbox:
+                    return "boolean";
+                    case GridDataType.String:
+                    return "string";
+                    case GridDataType.Date:
+                    return "datetime";
+                    case GridDataType.Number:
+                    return "number";
+                }
+            
+               }
 
             
 

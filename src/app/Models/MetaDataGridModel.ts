@@ -17,4 +17,5 @@ export class MetaDataGridModel{
     public ValueMember :string;
     public FreezeType :number;
     public DefaultValue:string;
+    public FieldType :number;
 }

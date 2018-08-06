@@ -12,7 +12,7 @@ import { QueryEntityModel } from '../Models/QueryEntityModel';
 import { AppConstants } from '../AppCommon/App.Constant';
 import { DeleteEntityHandler } from '../Helpers/DeleteEntityHanlder';
 import { DeleteEntityModel } from '../Models/DeleteEntityModel';
-import { DefaultTypes } from '../AppCommon/App.Enums';
+import { DefaultTypes, GridDataType } from '../AppCommon/App.Enums';
 import { UserNav } from '../Models/UserNavModel';
 import { AlertService } from '../Services/AlertService';
 
@@ -114,6 +114,7 @@ private LoadColumns(result :  Array<MetaDataGridModel>){
         this.columns.push({
           dataField: element.Code,
           caption :element.Name,
+          dataType:component.CatalogEntityDataGridHandler.ParseDataType(element.AttributeType  as GridDataType),
         })
       }
     }

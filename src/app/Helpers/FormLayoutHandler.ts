@@ -62,9 +62,10 @@ private LoadHeaderItems():Array<any>{
 private LoadInnerItems(headerItems:Array<any>,metadata:Array<MetaDataGridModel>,Isnew :boolean):Array<any>{
 
          metadata.forEach(value =>{
-            if(value.ShowControl){ 
+            if(value.ShowControl && (value.FieldType==2 || value.FieldType==3) ){ 
                 headerItems[0].items.push({
                     dataField: value.Code,
+                    label:{text:value.Name},
                     editorType: this.getEditorType(value.AttributeType),
                     editorOptions: this.getEditorOptions(this.getEditorType(value.AttributeType),value,Isnew ),
                     validationRules: this.getMandatoryFieldsValidation(value.Code, value.IsMandatory),
