@@ -40,6 +40,8 @@ import { EntityMetaDataService } from './Services/EntityMetaDataService';
 import { EntityMetaDataHandler } from './Helpers/EntityMetaDataHandler';
 import { ChildGridComponent } from './child-grid/child-grid.component';
 import { ChildEntityDataGridHandler } from './Helpers/ChildEntityDataGridHandler';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SignupComponent } from './signup/signup.component';
 
 
 
@@ -57,7 +59,9 @@ import { ChildEntityDataGridHandler } from './Helpers/ChildEntityDataGridHandler
     LogoComponentComponent,
     HeaderComponent,
     ProfileComponent,
-    ChildGridComponent
+    ChildGridComponent,
+    ForgotPasswordComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

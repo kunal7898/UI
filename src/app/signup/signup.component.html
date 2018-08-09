@@ -1,10 +1,10 @@
 
- <div class="materialContainer">
+ <div class="SingupmaterialContainer">
 
 
   <div class="box">
 
-     <div class="title">LOGIN</div>
+     <div class="title">SIGN-UP</div>
 
     <div id="body">
   <form id="box" class="box" (submit)="DoLogIn($event)">
@@ -14,7 +14,11 @@
      [(formData)]="formData" 
     [(items)]="items"
     validationGroup="dxvalidationGroup"
+    colCount="2"
     ></dx-form>
+    <dx-button  style="margin-top: 16px;
+    width: 41%;
+    margin-left: 150px;" text="Signup" type="success" ></dx-button>
     <dx-load-panel  shadingColor="rgba(0,0,0,0.4)" [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true"
       [shading]="true" [closeOnOutsideClick]="false" [(message)]="LoadingMessage">
     </dx-load-panel>
@@ -25,13 +29,9 @@
 
 
     
-     <a  (click)="ForgotPassword($event)"  class="pass-forgot">Forgot your password?</a>
+     <a (click)="Login($event)" class="pass-forgot">Back to Login!</a>
 
   </div>
 
-  <div class="overbox">
-     <div class="material-button alt-2" ><span (click)="Signup($event)"class="shape"></span></div>
-
-  </div>
 
 </div>

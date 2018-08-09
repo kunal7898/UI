@@ -30,7 +30,10 @@ export class HTTPServiceInterceptor implements  HttpInterceptor{
           this.AlertService.LoginFailed("Your Session Details not longer vaild.","Session Details").then((response) => {
               this.router.navigate(['/login']);
          });
-        }else{
+        }else if(error.status==400) {
+          this.AlertService.FailAlert(error.error.error_description,error.error.error);
+        }
+        else {
           this.AlertService.FailAlert(error.message,"Error");
         }
        

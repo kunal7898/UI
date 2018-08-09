@@ -1,7 +1,9 @@
 import { ModuleWithProviders } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { LoginComponent } from "./login/login.component";
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { MenuComponentComponent } from "./menu-component/menu-component.component";
+import { SignupComponent } from './signup/signup.component';
 import { AuthPreventer } from "./RouterPreventer/AuthPreventer";
 import {PagenotFoundComponent} from "./pagenot-found/pagenot-found.component"
 import { CatalogEntityComponent } from "./catalog-entity/catalog-entity.component";
@@ -15,8 +17,16 @@ export const routes : Routes=[
         pathMatch: "full"
     },
     {
+        path: "ForgotPassword",
+        component: ForgotPasswordComponent
+    },
+    {
         path: "login",
         component: LoginComponent
+    },
+    {
+        path: "Signup",
+        component: SignupComponent
     },
     {
         path: "menu",

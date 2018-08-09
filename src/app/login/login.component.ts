@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild,Output,EventEmitter, ViewEncapsulation } from '@angular/core';
 import { LoginFormResolver } from '../FormResolver/LoginFormResolver';
 import { FormValidator } from '../Validator/FormValidator';
 import { DxFormComponent } from "devextreme-angular/ui/form";
@@ -14,7 +14,8 @@ import * as $ from 'jquery';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  encapsulation:ViewEncapsulation.None,
 })
 export class LoginComponent implements OnInit {
 
@@ -26,6 +27,7 @@ export class LoginComponent implements OnInit {
   loadingPanal: any;
   loginSubscriber: Subscription;
   LoadingMessage : string ;
+  IsLoginSucessFull : boolean = false;
   //#endregion
 
   @ViewChild(DxFormComponent) form: DxFormComponent;
@@ -52,6 +54,7 @@ export class LoginComponent implements OnInit {
     viewresolver.LoadLoginMetaData().forEach(element => {
     Items.push({
       dataField:element["code"],
+      label:element["AttributeType"]=="button"?null: {text:element["Name"]},
       width:"330px",
       editorType:this.getEditorType(element["AttributeType"]),
       editorOptions:this.getEditorOptions(this.getEditorType(element["AttributeType"]),element["HideData"]),
@@ -77,15 +80,21 @@ export class LoginComponent implements OnInit {
   private initLogin(){
    this.loginSubscriber =  this.loginHandler.SignIn(this.formData).subscribe(
        result => {
-         this.loadingVisible =  false;
-         this.LoadingMessage = "loading user environment...";
-         this.loadingVisible =  true;
-         setTimeout(()=>{    //<<<---    using ()=> syntax
+         if(result!=null){
           this.loadingVisible =  false;
-          this.LoadUserMenus();
-     }, 2000);
-      
-        console.log(result);
+          this.LoadingMessage = "loading user environment...";
+          this.loadingVisible =  true;
+          this.IsLoginSucessFull=true;
+          setTimeout(()=>{    //<<<---    using ()=> syntax
+           this.loadingVisible =  false;
+           this.LoadUserMenus();
+      }, 2000);
+         }
+         else{
+            this.loadingVisible =  false;
+            this.IsLoginSucessFull=false;
+         }
+       
           }
 
 )
@@ -131,11 +140,15 @@ private LoadUserMenus(){
           return  {
             text:"Login",
             type :"success",
-            width:"330px",
+            width:"321px",
             onClick: function(event,value) {
               var button =  event.component;
               button.option('disabled', true);
               Component.DoLogIn(event.event);
+              if(!Component.IsLoginSucessFull)
+              {
+                button.option('disabled', false);
+              }
 
           },
           }; 
@@ -157,5 +170,13 @@ private LoadUserMenus(){
 
      //#endregion
 
+    //Signup 
+    public Signup(event){
+      this.router.navigate(['Signup'])
+    }
+
+    public ForgotPassword(event){
+      this.router.navigate(['ForgotPassword'])
+    }
 
 }

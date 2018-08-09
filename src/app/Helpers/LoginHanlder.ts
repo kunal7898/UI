@@ -24,7 +24,7 @@ this.loginservice.Login(loginRequest).subscribe( result => {
     this.OnLoginSuccess(result);
     this.source.next(result);
 },
-error => { console.error(error); })
+error => { this.source.next(null); })
 
 return (this.AsObservable()) ;
 
