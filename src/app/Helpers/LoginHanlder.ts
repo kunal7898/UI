@@ -7,6 +7,7 @@ import { Subject } from "rxjs/Subject";
 import { BaseHandler } from "./BaseHandler";
 import { SessionDataAgent } from "../SessionDataAgent/SessionDataAgent";
 import { UserDataModel } from "../Models/UserModel";
+import { ForgotEntityModel } from "../Models/ForgotPasswordModel";
 @Injectable()
 export class LoginHandler extends BaseHandler{
 response : any;
@@ -43,6 +44,18 @@ public OnLoginSuccess(result:AppRequest.LoginResponse){
     }
 
 }
+
+
+public ForgotPassword(ForgotModel :  ForgotEntityModel.ForgotPasswordModel):Observable<any>{
+    let ForgotEntityrequest =  new AppRequest.EntityForgotPasswordRequestMessage(ForgotModel);
+    this.loginservice.ForgotPassword(ForgotEntityrequest.ForgotPasswordRequest).subscribe( result => {
+        this.source.next(result);
+    },
+    error => { console.error(error); })
+    
+    return (this.AsObservable()) ;
+    
+    }
 
 
 

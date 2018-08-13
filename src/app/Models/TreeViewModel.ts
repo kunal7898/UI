@@ -9,6 +9,7 @@ export class TreeView {
    public SubFolder2:string;
    public expanded: false;
    public EntityType:number;
+   public DbStoreType:number;
    public items: Array<TreeView> = [];
     constructor() {
 

@@ -46,7 +46,7 @@ export class MenuComponentComponent implements OnInit {
     if(event.node.children.length>0){
         return;
       }
-    if(event.itemData.Id=="2"){
+    if(event.itemData.Id=="200"){
         this.router.navigate(['menu'])
         return;
     }
@@ -117,7 +117,8 @@ let v = item;
             icon: element["ParentID"]==0?'folder':'doc',
             ParentID: element["ParentID"] ,
             EntityType:element["EntityType"] ,
-            expanded:element["expanded"]
+            expanded:element["expanded"],
+            DbStoreType:element["DbStoreType"]
           })
   
       });

@@ -5,4 +5,5 @@ export class UserNav{
   public IsAddAllowed : boolean;
   public IsEditAllowed :boolean;
   public IsDeleteAllowed :boolean;
+  public DbStoreType:number;
 }

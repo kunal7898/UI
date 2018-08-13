@@ -7,6 +7,10 @@ QUERYENTITY_API:"/api/QueryEntity",
 UPDATEENTITY_API:"/api/UpdateEntity",
 CREATEENTITY_API:"/api/CreateEntity",
 DELETEENTITY_API:"/api/DeleteEntity",
+SIGNUP_API:"/api/SignUp",
+FORGOTPASSWORD_API :"/api/ForgotPassword",
+CHANGEPASSWORDEX_API:"/api/ChangePassword",
+
 
 }); 
 

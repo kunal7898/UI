@@ -5,6 +5,7 @@ import { AppFilters } from "../AppCommon/Controls/App.QueryFilters";
 import { UpdateEntityModel } from "./UpdateEntityModel";
 import { CreateEntityModel } from "./CreateEntityModel";
 import { DeleteEntityModel } from "./DeleteEntityModel";
+import { ForgotEntityModel } from "./ForgotPasswordModel";
 
 export namespace AppRequest{
 
@@ -92,6 +93,16 @@ export namespace AppRequest{
         }
     }
 
+    export class EntityForgotPasswordRequestMessage{
+        public ForgotPasswordRequest : AppRequest.ForgotPasswordRequest;
+        constructor(forgotpasswordRequest: ForgotEntityModel.ForgotPasswordModel ){
+            this.ForgotPasswordRequest =  new AppRequest.ForgotPasswordRequest();
+            this.ForgotPasswordRequest.Email =  forgotpasswordRequest.UserName;
+           
+
+        }
+    }
+
     export class EntityDataQueryRequestMessage{
         public QueryEntityRequest : AppRequest.EntityQueryRequest;
         constructor(queryEntityRequest: QueryEntityModel.EntityDataModel ){
@@ -147,7 +158,10 @@ export namespace AppRequest{
         public EntityFieldId:string
         public Data:any;
      }
-
+    
+     export class ForgotPasswordRequest{
+         public Email :string;
+     }
 
 
 }

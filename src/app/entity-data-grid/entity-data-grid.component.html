@@ -1,4 +1,4 @@
-<dx-button style="float:right;margin-bottom: 21px;
+<dx-button *ngIf="ShowAddButton" style="float:right;margin-bottom: 21px;
 float: inherit " [text]="AddButton.text" [type]="AddButton.type" (onClick)="NewEntityForm()"></dx-button>
 
 <div style="width:99%" >
@@ -17,7 +17,7 @@ float: inherit " [text]="AddButton.text" [type]="AddButton.type" (onClick)="NewE
    <dxo-paging [pageSize]="10"></dxo-paging>
    <dxo-editing 
    mode="row"
-   [allowDeleting]="true"
+   [(allowDeleting)]="allowDeleting"
   >
 </dxo-editing>
    

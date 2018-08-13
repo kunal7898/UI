@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation } from '@angular/core';
 import { SessionDataAgent } from '../../SessionDataAgent/SessionDataAgent';
 import { UserDataModel } from '../../Models/UserModel';
 import { AlertService } from '../../Services/AlertService';
@@ -9,7 +9,8 @@ import { Router } from '../../../../node_modules/@angular/router';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  encapsulation:ViewEncapsulation.None,
 })
 export class ProfileComponent implements OnInit {
   logoutSubscriber: Subscription;

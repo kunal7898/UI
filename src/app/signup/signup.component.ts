@@ -14,6 +14,9 @@ export class SignupComponent implements OnInit {
 
   formData:any;
   items :any[];
+  loadingVisible: boolean = false;
+  loadingPanal: any;
+  LoadingMessage : string ;
   constructor(private router: Router) { }
 
   ngOnInit() {
@@ -101,6 +104,10 @@ export class SignupComponent implements OnInit {
 
     public Login(){
       this.router.navigate(['login'])
+    }
+
+    public DoSignup(event){
+      
     }
 
 

@@ -25,4 +25,9 @@ body.set('grant_type', "password");
 
   }
 
+  public ForgotPassword(ForgotPasswordRequest: AppRequest.ForgotPasswordRequest){
+    let requestPoint =AppSettings.BASE_URL+ AppSettings.FORGOTPASSWORD_API;
+    return this.http.post<any>(requestPoint, ForgotPasswordRequest);
+   }
+
 }

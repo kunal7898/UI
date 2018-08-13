@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ForgotPasswordFormResolver } from '../FormResolver/ForgotPasswordFormResolver';
 import { FormValidator } from '../Validator/FormValidator';
 import { Router } from '../../../node_modules/@angular/router';
+import { DxFormComponent } from "devextreme-angular/ui/form";
+import { Subscription } from '../../../node_modules/rxjs/Subscription';
+import { ForgotPasswordHandler } from '../Helpers/ForgotPasswordHandler';
+import { AlertService } from '../Services/AlertService';
+import { LoginHandler } from '../Helpers/LoginHanlder';
 
 @Component({
   selector: 'app-forgot-password',
@@ -12,7 +17,12 @@ export class ForgotPasswordComponent implements OnInit {
 
   formData:any;
   items :any[];
-  constructor(private router: Router) { }
+  loadingVisible: boolean = false;
+  loadingPanal: any;
+  LoadingMessage : string ;
+  ForgotPasswordSubscriber: Subscription;
+  @ViewChild(DxFormComponent) form: DxFormComponent;
+  constructor(private router: Router,private AlertService:AlertService,private LoginHandler:LoginHandler) { }
 
   ngOnInit() {
     this.formData = [];
@@ -75,8 +85,8 @@ export class ForgotPasswordComponent implements OnInit {
             width:"321px",
             onClick: function(event,value) {
               var button =  event.component;
-              button.option('disabled', true);
-     
+              //button.option('disabled', true);
+              Component.DoForgotPassword(event.event);
 
           },
           }; 
@@ -100,4 +110,31 @@ export class ForgotPasswordComponent implements OnInit {
       this.router.navigate(['login'])
     }
 
+    public DoForgotPassword(event){
+      let ForgotPasswordForm: any = this.form.instance;
+      let valid: any = ForgotPasswordForm.validate();
+      event.preventDefault();
+      if (valid.isValid) {
+       this.LoadingMessage = "Submitting Query..";
+       this.loadingVisible =  true;
+       this.initProcess();
+      }
+    }
+
+    private initProcess(){
+      this.ForgotPasswordSubscriber =  this.LoginHandler.ForgotPassword(this.formData).subscribe(
+          result => {
+            if(result!=null){
+             this.loadingVisible =  false;
+             this.AlertService.SuccessAlert(result.ResponseMessage,"ForgotPassword");
+            }
+            else{
+               this.loadingVisible =  false;
+            }
+          
+             }
+   
+   )
+     }
+   
 }

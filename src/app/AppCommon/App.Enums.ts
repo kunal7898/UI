@@ -49,3 +49,10 @@ export enum GridDataType{
     Number="7",
 
 }
+
+export enum DbStoreType{
+    Master =1,
+    Transcation=2,
+    Log=3,
+    Report =4,
+}

@@ -12,7 +12,7 @@ import { QueryEntityModel } from '../Models/QueryEntityModel';
 import { AppConstants } from '../AppCommon/App.Constant';
 import { DeleteEntityHandler } from '../Helpers/DeleteEntityHanlder';
 import { DeleteEntityModel } from '../Models/DeleteEntityModel';
-import { DefaultTypes, GridDataType } from '../AppCommon/App.Enums';
+import { DefaultTypes, GridDataType, DbStoreType } from '../AppCommon/App.Enums';
 import { UserNav } from '../Models/UserNavModel';
 import { AlertService } from '../Services/AlertService';
 
@@ -31,11 +31,13 @@ export class EntityDataGridComponent implements OnChanges  {
   columns =[];
   DatagridComponent : any;
   EntityEditModel:UserNav;
+  allowDeleting :boolean = true;
   private MetadataModel:MetaDataModel.EntityMetaDataModel;
   AddButton = {
     text: 'Add',
     type: 'success',
   };
+  ShowAddButton:boolean = false;
   
   constructor(public CatalogEntityDataGridHandler:CatalogEntityDataGridHandler,  public QueryEntityHanlder:QueryEntityHandler,public SessiondataAgent : SessionDataAgent,   private router: Router,public DeleteEntityHanlder:DeleteEntityHandler,public AlertService:AlertService) { }
 
@@ -62,8 +64,12 @@ export class EntityDataGridComponent implements OnChanges  {
 
  private CreateButtonComponents(EditModel:UserNav){
   
-  if(EditModel.IsAddAllowed){
-    
+  if(EditModel.DbStoreType==DbStoreType.Master || EditModel.DbStoreType==DbStoreType.Transcation){
+   this.ShowAddButton=true;
+   this.allowDeleting = true;
+  }else{
+    this.ShowAddButton= false;
+    this.allowDeleting = false;
   }
   
 }

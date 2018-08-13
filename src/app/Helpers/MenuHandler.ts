@@ -37,6 +37,7 @@ this.DashBoard.forEach(element => {
         val.text= element["ViewName"];
         val.ParentID =  element["Group1"]==0?null:element["Group1"]
         val.EntityType= element["EntityType"];
+        val.DbStoreType =  element["DbStoreType"];
         menus.push(val);
     });
      // Push Settings
